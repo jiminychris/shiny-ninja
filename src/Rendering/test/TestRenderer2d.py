@@ -1,11 +1,11 @@
 import unittest
 import pygame
-import ../Renderer2d
+from Rendering import Renderer2d
 
-class TestRenderer2d(unittest.TestCase)
+class TestRenderer2d(unittest.TestCase):
     def setUp(self):
         pygame.init()
-        self._renderer2d = new Renderer2d.Renderer2d()
+        self._renderer2d = Renderer2d.Renderer2d()
 
     def tearDown(self):
         del self._renderer2d
