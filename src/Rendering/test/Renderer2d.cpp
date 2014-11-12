@@ -1,6 +1,7 @@
-#include "Renderer2d.h"
+#include "../Renderer2d.h"
 #include "gtest/gtest.h"
 #include <SDL2/SDL.h>
+#include <iostream>
 
 class RendererTest : public testing::Test
 {

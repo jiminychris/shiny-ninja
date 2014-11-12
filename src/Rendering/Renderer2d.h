@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "Renderable2d.h"
+#include "SDL2/SDL.h"
 
 class Renderer2d
 {
