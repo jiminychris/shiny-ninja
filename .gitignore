@@ -1,8 +1,15 @@
 shiny-ninja.sublime_workspace
 <<<<<<< HEAD
+<<<<<<< HEAD
 *.pyc
 =======
 *.o
 *.a
 */bin/*
 >>>>>>> parent of 3a30ada... Adjusting binary ignoring
+=======
+*.o
+*.a
+**/bin/
+**/lib/
+>>>>>>> parent of ee02bb4... linking is hard, switching to python
