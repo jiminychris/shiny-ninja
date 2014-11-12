@@ -1,2 +1,8 @@
 shiny-ninja.sublime_workspace
+<<<<<<< HEAD
 *.pyc
+=======
+*.o
+*.a
+*/bin/*
+>>>>>>> parent of 3a30ada... Adjusting binary ignoring
