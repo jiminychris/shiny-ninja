@@ -1,4 +1,5 @@
 shiny-ninja.sublime_workspace
 *.o
 *.a
-*/bin/*
+**/bin/
+**/lib/
