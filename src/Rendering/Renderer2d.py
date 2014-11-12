@@ -7,12 +7,11 @@ class Renderer2d:
     def __init__(self):
         self._window = None
 
-    def openWindow(self):
+    def OpenWindow(self):
         self._window = pygame.display.set_mode(_SIZE)
-        return self._window != None
 
-    def closeWindow(self):
+    def CloseWindow(self):
         pass
 
-    def render(self):
+    def Render(self):
         pass
