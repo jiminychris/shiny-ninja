@@ -2,8 +2,10 @@
     "folders":
     [
         {
-            "path": "src",
-            "name": "Source"
+            "path": "Client"
+        },
+        {
+            "path": "Server"
         }
     ]
 }
