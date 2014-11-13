@@ -1,0 +1,218 @@
+<map>
+  <portals>
+    <right>
+      <portal file="ow9-4.map" />
+    </right>
+  </portals>
+  <tiles file="tiles.til">
+    <palette id="default">
+      <color r="0" g="0" b="0" />
+      <color r="200" g="76" b="12" />
+      <color r="32" g="56" b="236" />
+      <color r="255" g="227" b="171" />
+    </palette>
+    <row>
+      <tile type="water" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="water" />
+    </row>
+    <row>
+      <tile type="water" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="water" />
+    </row>
+    <row>
+      <tile type="water" />
+      <tile type="wall" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="wall" />
+      <tile type="water" />
+    </row>
+    <row>
+      <tile type="water" />
+      <tile type="wall" />
+      <tile type="floor" />
+      <tile type="top-left-tree" />
+      <tile type="top-right-tree" />
+      <tile type="floor" />
+      <tile type="top-left-tree" />
+      <tile type="tree-face" />
+      <tile type="top-right-tree" />
+      <tile type="floor" />
+      <tile type="top-left-tree" />
+      <tile type="top-right-tree" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="wall" />
+      <tile type="water" />
+    </row>
+    <row>
+      <tile type="water" />
+      <tile type="wall" />
+      <tile type="floor" />
+      <tile type="bottom-left-tree" />
+      <tile type="bottom-right-tree" />
+      <tile type="floor" />
+      <tile type="bottom-left-tree" />
+      <tile type="door">
+        <portal file="l1-1-2.map" x="120" y="152" type="CaveEntrance"/>
+      </tile>
+      <tile type="bottom-right-tree" />
+      <tile type="floor" />
+      <tile type="bottom-left-tree" />
+      <tile type="bottom-right-tree" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="wall" />
+      <tile type="water" />
+    </row>
+    <row>
+      <tile type="water" />
+      <tile type="wall" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="bridge" />
+    </row>
+    <row>
+      <tile type="water" />
+      <tile type="wall" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="top-left-tree" />
+      <tile type="top-right-tree" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="top-left-tree" />
+      <tile type="top-right-tree" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="wall" />
+      <tile type="water" />
+    </row>
+    <row>
+      <tile type="water" />
+      <tile type="wall" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="bottom-left-tree" />
+      <tile type="bottom-right-tree" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="bottom-left-tree" />
+      <tile type="bottom-right-tree" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="wall" />
+      <tile type="water" />
+    </row>
+    <row>
+      <tile type="water" />
+      <tile type="wall" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="wall" />
+      <tile type="water" />
+    </row>
+    <row>
+      <tile type="water" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="water" />
+    </row>
+    <row>
+      <tile type="water" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="water" />
+    </row>
+  </tiles>
+  <monsters>
+    <monster id="octorok" x="112" y="96" />
+  </monsters>
+</map>

@@ -1,0 +1,236 @@
+<map>
+  <portals>
+    <up>
+      <portal file="ow6-6.map" x="-1" y="160" />
+    </up>
+    <right>
+      <portal file="ow7-7.map" x="0" y="-1" />
+    </right>
+    <down>
+      <portal file="ow6-8.map" x="-1" y="0" />
+    </down>
+    <left>
+      <portal file="ow5-7.map" x="240" y="-1" />
+    </left>
+  </portals>
+  <tiles file="tiles.til">
+    <palettes>
+      <palette id="default">
+        <color r="0" g="0" b="0" />
+        <color r="0" g="171" b="0" />
+        <color r="32" g="56" b="236" />
+        <color r="255" g="227" b="171" />
+      </palette>
+      <palette id="mid">
+        <color r="0" g="0" b="0" />
+        <color r="200" g="76" b="12" />
+        <color r="32" g="56" b="236" />
+        <color r="255" g="227" b="171" />
+      </palette>
+    </palettes>
+    <row>
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="water" />
+      <tile type="water" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="wall" />
+      <tile type="floor" />
+      <tile type="wall" />
+      <tile type="floor" />
+      <tile type="wall" />
+      <tile type="wall" />
+    </row>
+    <row>
+      <tile type="wall" />
+      <tile type="top-left-corner" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="water" />
+      <tile type="water" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="wall" />
+      <tile type="floor" />
+      <tile type="wall" />
+      <tile type="floor" />
+      <tile type="top-right-corner" />
+      <tile type="wall" />
+    </row>
+    <row>
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="water" palette="mid" />
+      <tile type="water" palette="mid" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+    </row>
+    <row>
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="water" palette="mid" />
+      <tile type="water" palette="mid" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="rock" palette="mid" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+    </row>
+    <row>
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="water" palette="mid" />
+      <tile type="water" palette="mid" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="rock" palette="mid" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+    </row>
+    <row>
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="bridge" palette="mid" />
+      <tile type="bridge" palette="mid" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="rock" palette="mid" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+    </row>
+    <row>
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="water" palette="mid" />
+      <tile type="water" palette="mid" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="rock" palette="mid" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+    </row>
+    <row>
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="water" palette="mid" />
+      <tile type="water" palette="mid" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="rock" palette="mid" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+    </row>
+    <row>
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="water" palette="mid" />
+      <tile type="water" palette="mid" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+    </row>
+    <row>
+      <tile type="wall-top" />
+      <tile type="wall-top" />
+      <tile type="wall-top" />
+      <tile type="bottom-left-corner" />
+      <tile type="floor" />
+      <tile type="water" />
+      <tile type="water" />
+      <tile type="wall-top" />
+      <tile type="wall-top" />
+      <tile type="wall-top" />
+      <tile type="wall-top" />
+      <tile type="wall-top" />
+      <tile type="wall-top" />
+      <tile type="wall-top" />
+      <tile type="wall-top" />
+      <tile type="wall-top" />
+    </row>
+    <row>
+      <tile type="wall"/>
+      <tile type="wall"/>
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="floor" />
+      <tile type="water" />
+      <tile type="water" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall"/>
+      <tile type="wall"/>
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="wall" />
+    </row>
+  </tiles>
+  <monsters file="monsters.mon">
+    <monster id="octorok" x="160" y="32" />
+    <monster id="octorok" x="48" y="48" />
+    <monster id="octorok" x="32" y="80" />
+    <monster id="octorok" x="160" y="128" />
+  </monsters>
+</map>

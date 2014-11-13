@@ -1,0 +1,219 @@
+<map>
+  <portals>
+    <left>
+      <portal file="l1-1-2.map" />
+    </left>
+  </portals>
+  <collectibles file="collectibles.col">
+    <collectible id="key" x="84" y="113">
+      <condition>"key-l1-1-3" not in self._cache</condition>
+      <action>self._cache.append("key-l1-1-3")</action>
+    </collectible>
+  </collectibles>
+  <tiles file="uwtiles.til">
+    <palette>
+      <color r="0" g="0" b="0" />
+      <color r="0" g="128" b="136" />
+      <color r="24" g="60" b="92" />
+      <color r="0" g="232" b="216" />
+    </palette>
+    <row>
+      <tile type="top-left-ceil" />
+      <tile type="top-wall-ceil" />
+      <tile type="top-wall-ceil-1" />
+      <tile type="top-wall-ceil" />
+      <tile type="top-wall-ceil" />
+      <tile type="top-wall-ceil-2" />
+      <tile type="top-wall-ceil-3" />
+      <tile type="top-wall-ceil" />
+      <tile type="top-wall-ceil" />
+      <tile type="top-wall-ceil-4" />
+      <tile type="top-wall-ceil-5" />
+      <tile type="top-wall-ceil" />
+      <tile type="top-wall-ceil" />
+      <tile type="top-wall-ceil-6" />
+      <tile type="top-wall-ceil" />
+      <tile type="top-right-ceil" />
+    </row>
+    <row>
+      <tile type="left-wall-ceil" />
+      <tile type="top-left-floor" />
+      <tile type="top-wall-floor-1" />
+      <tile type="top-wall-floor-2" />
+      <tile type="top-wall-floor-3" />
+      <tile type="top-wall-floor-4" />
+      <tile type="top-wall-floor-5" />
+      <tile type="top-wall-floor" />
+      <tile type="top-wall-floor" />
+      <tile type="top-wall-floor-6" />
+      <tile type="top-wall-floor-7" />
+      <tile type="top-wall-floor-8" />
+      <tile type="top-wall-floor-9" />
+      <tile type="top-wall-floor-10" />
+      <tile type="top-right-floor" />
+      <tile type="right-wall-ceil" />
+    </row>
+    <row>
+      <tile type="left-wall-ceil" />
+      <tile type="left-wall-floor-1" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="right-wall-floor-1" />
+      <tile type="right-wall-ceil" />
+    </row>
+    <row>
+      <tile type="left-wall-ceil-1" />
+      <tile type="left-wall-floor-2" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="right-wall-floor-2" />
+      <tile type="right-wall-ceil-1" />
+    </row>
+    <row>
+      <tile type="left-door-ceil-1" />
+      <tile type="left-door-floor-1" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="block" />
+      <tile type="block" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="block" />
+      <tile type="block" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="right-wall-floor-3" />
+      <tile type="right-wall-ceil-2" />
+    </row>
+    <row>
+      <tile type="left-door-ceil-2" mask="True" />
+      <tile type="left-door-floor-2" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="block" />
+      <tile type="block" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="block" />
+      <tile type="block" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="right-wall-floor" />
+      <tile type="right-wall-ceil" />
+    </row>
+    <row>
+      <tile type="left-door-ceil-3" />
+      <tile type="left-door-floor-3" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="block" />
+      <tile type="block" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="block" />
+      <tile type="block" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="right-wall-floor-4" />
+      <tile type="right-wall-ceil-3" />
+    </row>
+    <row>
+      <tile type="left-wall-ceil-4" />
+      <tile type="left-wall-floor-5" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="right-wall-floor-5" />
+      <tile type="right-wall-ceil-4" />
+    </row>
+    <row>
+      <tile type="left-wall-ceil" />
+      <tile type="left-wall-floor-6" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="right-wall-floor-6" />
+      <tile type="right-wall-ceil" />
+    </row>
+    <row>
+      <tile type="left-wall-ceil" />
+      <tile type="bottom-left-floor" />
+      <tile type="bottom-wall-floor-1" />
+      <tile type="bottom-wall-floor-2" />
+      <tile type="bottom-wall-floor-3" />
+      <tile type="bottom-wall-floor-4" />
+      <tile type="bottom-wall-floor-5" />
+      <tile type="bottom-wall-floor" />
+      <tile type="bottom-wall-floor" />
+      <tile type="bottom-wall-floor-6" />
+      <tile type="bottom-wall-floor-7" />
+      <tile type="bottom-wall-floor-8" />
+      <tile type="bottom-wall-floor-9" />
+      <tile type="bottom-wall-floor-10" />
+      <tile type="bottom-right-floor" />
+      <tile type="right-wall-ceil" />
+    </row>
+    <row>
+      <tile type="bottom-left-ceil" />
+      <tile type="bottom-wall-ceil" />
+      <tile type="bottom-wall-ceil-1" />
+      <tile type="bottom-wall-ceil" />
+      <tile type="bottom-wall-ceil" />
+      <tile type="bottom-wall-ceil-2" />
+      <tile type="bottom-wall-ceil-3" />
+      <tile type="bottom-wall-ceil" />
+      <tile type="bottom-wall-ceil" />
+      <tile type="bottom-wall-ceil-4" />
+      <tile type="bottom-wall-ceil-5" />
+      <tile type="bottom-wall-ceil" />
+      <tile type="bottom-wall-ceil" />
+      <tile type="bottom-wall-ceil-6" />
+      <tile type="bottom-wall-ceil" />
+      <tile type="bottom-right-ceil" />
+    </row>
+  </tiles>
+</map>

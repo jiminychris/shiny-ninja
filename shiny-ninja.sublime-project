@@ -1,18 +1,6 @@
 {
-    "folders": 
+    "folders":
     [
-        {
-            "path": ".",
-            "name": "Shiny Ninja",
-            "file_include_patterns":
-            [
-                "Makefile"
-            ],
-            "folder_exclude_patterns":
-            [
-                "*"
-            ]
-        },
         {
             "path": "src",
             "name": "Source"

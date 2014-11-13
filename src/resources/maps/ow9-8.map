@@ -1,0 +1,222 @@
+<map>
+  <portals>
+    <up>
+      <portal file="ow9-7.map" x="-1" y="160" />
+    </up>
+    <left>
+      <portal file="ow8-8.map" x="240" y="-1" />
+    </left>
+  </portals>
+  <tiles file="tiles.til">
+    <palette>
+      <color r="0" g="0" b="0" />
+      <color r="0" g="171" b="0" />
+      <color r="192" g="192" b="192" />
+      <color r="255" g="227" b="171" />
+    </palette>
+    <row>
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="tree" />
+    </row>
+    <row>
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="tree" />
+    </row>
+    <row>
+      <tile type="wall" />
+      <tile type="wall" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+    </row>
+    <row>
+      <tile type="wall" />
+      <tile type="top-left-corner" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="floor" />
+    </row>
+    <row>
+      <tile type="top-left-corner"/>
+      <tile type="floor"/>
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor"/>
+      <tile type="floor"/>
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+    </row>
+    <row>
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="floor" />
+    </row>
+    <row>
+      <tile type="bottom-left-corner" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor"/>
+      <tile type="floor"/>
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+    </row>
+    <row>
+      <tile type="wall" />
+      <tile type="bottom-left-corner" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="tree" />
+      <tile type="floor" />
+      <tile type="floor" />
+    </row>
+    <row>
+      <tile type="wall"/>
+      <tile type="wall"/>
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+      <tile type="floor" />
+    </row>
+    <row>
+      <tile type="wall"/>
+      <tile type="wall"/>
+      <tile type="tree" />
+      <tile type="tree" />
+      <tile type="tree" />
+      <tile type="tree" />
+      <tile type="tree" />
+      <tile type="tree" />
+      <tile type="tree" />
+      <tile type="tree"/>
+      <tile type="tree"/>
+      <tile type="tree" />
+      <tile type="tree" />
+      <tile type="tree" />
+      <tile type="tree" />
+      <tile type="tree" />
+    </row>
+    <row>
+      <tile type="wall"/>
+      <tile type="wall"/>
+      <tile type="tree" />
+      <tile type="tree" />
+      <tile type="tree" />
+      <tile type="tree" />
+      <tile type="tree" />
+      <tile type="tree" />
+      <tile type="tree" />
+      <tile type="tree"/>
+      <tile type="tree"/>
+      <tile type="tree" />
+      <tile type="tree" />
+      <tile type="tree" />
+      <tile type="tree" />
+      <tile type="tree" />
+    </row>
+  </tiles>
+  <monsters file="monsters.mon">
+    <monster id="octorok" x="192" y="0" />
+    <monster id="octorok" x="224" y="0" />
+    <monster id="octorok" x="240" y="64" />
+    <monster id="octorok" x="240" y="80" />
+  </monsters>
+</map>
