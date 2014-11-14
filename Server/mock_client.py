@@ -14,6 +14,12 @@ def main():
 
     peers = []
 
+    listensocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    print("Created listen socket")
+    listensocket.bind(('', Messages.PEER_PORT))
+    print("Listen socket bound")
+    listensocket.listen(5)
+
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     print("Created socket")
     sock.connect((server_name, Messages.MATCHMAKING_PORT))
@@ -34,13 +40,9 @@ def main():
         sock.connect((peer, Messages.PEER_PORT))
         peers.append(sock)
 
-    listensocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    print("Created listen socket")
-    listensocket.bind((SELF, Messages.PEER_PORT))
-    print("Listen socket bound")
-    listensocket.listen(5)
     for peer in peers:
         listensocket.accept()
+        
     print("Connected to %s peers" % len(data.peers))
 
 

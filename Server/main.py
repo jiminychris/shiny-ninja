@@ -18,7 +18,7 @@ def main():
     print("Created socket")
     # bind the socket to a public host,
     # and an unassigned port
-    serversocket.bind((HOST, Messages.MATCHMAKING_PORT))
+    serversocket.bind(('', Messages.MATCHMAKING_PORT))
     print("Socket bound")
     #become a server socket
     serversocket.listen(5)
