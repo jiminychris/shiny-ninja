@@ -33,6 +33,7 @@ def main():
         print("Matchmaking Error")
         sys.exit(1)
     if not isinstance(data, Messages.MatchmakingPeers):
+        print("Protocol breach: %s" % str(data))
         sys.exit(1)
 
     peers = [p for p in data.peers if p != SELF]
@@ -40,7 +41,7 @@ def main():
     for peer in peers:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         addr = (peer, Messages.PEER_PORT)
-        print("Connecting to %s...", str(addr))
+        print("Connecting to %s..." % str(addr))
         sock.connect(addr)
         print("Connection succeeded!")
         peers.append(sock)
