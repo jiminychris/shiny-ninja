@@ -21,12 +21,14 @@ def main():
     listensocket.listen(5)
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    print("Created socket")
     sock.connect((server_name, Messages.MATCHMAKING_PORT))
+    print("Connecting to matchmaking server")
     sock.send(pickle.dumps(Messages.MatchmakingConfiguration(int(n))))
 
+    print("Waiting for players...")
     data = pickle.loads(sock.recv(512))
     sock.close()
+    print("Found players!")
     if isinstance(data, Messages.MatchmakingError):
         print("Matchmaking Error")
         sys.exit(1)
@@ -37,12 +39,15 @@ def main():
 
     for peer in peers:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.connect((peer, Messages.PEER_PORT))
+        addr = (peer, Messages.PEER_PORT)
+        print("Connecting to %s...", str(addr))
+        sock.connect(addr)
+        print("Connection succeeded!")
         peers.append(sock)
 
     for peer in peers:
         listensocket.accept()
-        
+
     print("Connected to %s peers" % len(data.peers))
 
 
