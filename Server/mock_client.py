@@ -5,7 +5,7 @@ import pickle
 
 SELF = socket.gethostbyname(socket.gethostname())
 
-def main():
+def main(listensocket):
     if len(sys.argv) != 3:
         print("Expected name of matchmaking server and number of players")
         sys.exit(1)
@@ -14,7 +14,6 @@ def main():
 
     peers = []
 
-    listensocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     print("Created listen socket")
     listensocket.bind(('', Messages.PEER_PORT))
     print("Listen socket bound")
@@ -51,4 +50,9 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    listensocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        main(listensocket)
+    finally:
+        listensocket.close()
+
