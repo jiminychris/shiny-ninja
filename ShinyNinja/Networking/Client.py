@@ -1,0 +1,51 @@
+import sys
+import socket
+import Messages as Messages
+import pickle
+
+listensocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+def find_peers():
+    if len(sys.argv) != 3:
+        print("Expected name of matchmaking server and number of players")
+        sys.exit(1)
+
+    server_name, n = sys.argv[1:]
+
+    peers = []
+
+    print("Created listen socket")
+    listensocket.bind(('', Messages.PEER_PORT))
+    print("Listen socket bound")
+    listensocket.listen(5)
+
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.connect((server_name, Messages.MATCHMAKING_PORT))
+    print("Connecting to matchmaking server")
+    sock.send(pickle.dumps(Messages.MatchmakingConfiguration(int(n))))
+
+    print("Waiting for players...")
+    data = pickle.loads(sock.recv(512))
+    sock.close()
+    print("Found players!")
+    if isinstance(data, Messages.MatchmakingError):
+        print("Matchmaking Error")
+        sys.exit(1)
+    if not isinstance(data, Messages.MatchmakingPeers):
+        print("Protocol breach: %s" % str(data))
+        sys.exit(1)
+
+    for peer in data.peers:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        addr = (peer, Messages.PEER_PORT)
+        print("Connecting to %s..." % str(addr))
+        sock.connect(addr)
+        print("Connection succeeded!")
+        peers.append(sock)
+
+    for peer in data.peers:
+        listensocket.accept()
+
+    print("Connected to %s peers" % len(data.peers))
+
+    return peers

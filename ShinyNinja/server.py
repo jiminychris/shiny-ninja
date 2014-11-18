@@ -1,5 +1,5 @@
 import socket
-import Messages
+from Networking import Messages
 import pickle
 
 HOST = socket.gethostbyname(socket.gethostname())
