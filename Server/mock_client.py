@@ -36,9 +36,7 @@ def main():
         print("Protocol breach: %s" % str(data))
         sys.exit(1)
 
-    peers = [p for p in data.peers if p != SELF]
-
-    for peer in peers:
+    for peer in data.peers:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         addr = (peer, Messages.PEER_PORT)
         print("Connecting to %s..." % str(addr))
@@ -46,7 +44,7 @@ def main():
         print("Connection succeeded!")
         peers.append(sock)
 
-    for peer in peers:
+    for peer in data.peers:
         listensocket.accept()
 
     print("Connected to %s peers" % len(data.peers))
