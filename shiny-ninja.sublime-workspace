@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"render",
+				"_renderables"
+			],
+			[
 				"line",
 				"linestream"
 			],
@@ -172,10 +176,6 @@
 				"renderableBox"
 			],
 			[
-				"render",
-				"renderableBox"
-			],
-			[
 				"componen",
 				"componentConstructor"
 			],
@@ -303,6 +303,55 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "ShinyNinja/client.py",
+			"settings":
+			{
+				"buffer_size": 1133,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "1/10/14\n\nHi Mr. LaBauve,\n\nYour IRB protocol titled \"Evaluating the Effectiveness of a Software Interface for Tabletop Games\" has been reviewed by the UA Office for Research.  The revisions outlined below are being requested at this time.  Please be aware that additional revisions may be requested at a later date.\n\n1.  Within section 2(a) of the protocol provide a few additional details regarding when and where participants will complete the tasks.  This is included within the recruitment script provided within section 4(g) and it should be noted within section 2(a) as well.\n\n2.  Section 7(a) states \"The data collected in the research process have no obvious potential to cause harm if linked to a particular subject, so the researchers will take no special care to keep responses anonymous, though it is entirely unnecessary to keep any such identifiable data.\"  In order to qualify under exempt category # 2, the data collected from participants must be recorded in such a manner that human subjects cannot be identified, directly or through identifiers linked to the subjects.  Please modify the language within section 7(a) to indicate that you will not collect any identifiable data and that participation will be anonymous.\n\n3.  As written, the protocol includes procedures for obtaining signed informed consent from study participants.  From my reading and understanding of the study, it appears that the participant?s signature on the informed consent document would be the only identifiable information you have tying the participant back to the participation.  In order to protect the privacy of the participants and to ensure confidentiality of the data, it is recommended that the signature space on the consent document be removed at this time.  Please remove the signature space from the consent document and insert a statement similar to the following in its place: \"Completing and returning the attached survey constitutes your consent to participate.  Please keep a copy of this informed consent form for your records\".\n\nPlease submit the revised application within 60 days of this request.  If a response is not received within a 60 day period the project will be administratively closed and you will be required to submit a new application to continue with this project.  \n\nThank You,\nEd\n\n\nEdward M. Shirley, CIP\nResearch Compliance Specialist \nOffice for Research Compliance \nThe University of Alabama \n358 Rose Administration Building\n801 University Blvd\nBox 870127\nTuscaloosa, AL 35487-0308\n205-348-5069 (office)\n205-348-7189 (fax)",
+			"settings":
+			{
+				"buffer_size": 2560,
+				"line_ending": "Unix",
+				"name": "1/10/14"
+			}
+		},
+		{
+			"file": "ShinyNinja/Game/Graphics.py",
+			"settings":
+			{
+				"buffer_size": 172,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/chris/Git/zeldack/src/main/main.py",
+			"settings":
+			{
+				"buffer_size": 27186,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "ShinyNinja/Game/Spritesheet.py",
+			"settings":
+			{
+				"buffer_size": 1500,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "ShinyNinja/Networking/Client.py",
+			"settings":
+			{
+				"buffer_size": 1562,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -340,9 +389,17 @@
 	},
 	"expanded_folders":
 	[
+		"/Users/chris/Git/shiny-ninja/ShinyNinja",
+		"/Users/chris/Git/shiny-ninja/ShinyNinja/Game"
 	],
 	"file_history":
 	[
+		"/Users/chris/Git/shiny-ninja/ShinyNinja/Graphics.py",
+		"/Users/chris/Git/shiny-ninja/ShinyNinja/Game/Graphics",
+		"/Users/chris/Git/shiny-ninja/Client/main.py",
+		"/Users/chris/Git/shiny-ninja/shiny-ninja.sublime-project",
+		"/Users/chris/Git/shiny-ninja/Server/mock_client.py",
+		"/Users/chris/Git/shiny-ninja/Client/Networking.py",
 		"/Users/chris/Git/shiny-ninja/src/Rendering/Renderable2d.py",
 		"/Users/chris/Git/shiny-ninja/src/Rendering/test/TestRenderer2d.py",
 		"/Users/chris/Git/shiny-ninja/src/Rendering/Renderer2d.py",
@@ -355,7 +412,6 @@
 		"/Users/chris/Git/shiny-ninja/gtest-1.7.0/README",
 		"/Users/chris/Git/shiny-ninja/src/Rendering/Renderable2d.h",
 		"/Users/chris/Git/shiny-ninja/src/Rendering/Renderable2d.cpp",
-		"/Users/chris/Git/shiny-ninja/shiny-ninja.sublime-project",
 		"/Users/chris/Dropbox/ICPC Practice/Misc/chemistry/chemistry.in",
 		"/Users/chris/Dropbox/ICPC Practice/Misc/chemistry/chemistry.c",
 		"/Users/chris/Dropbox/ICPC Practice/Misc/languages/languages.c",
@@ -465,16 +521,11 @@
 		"/Users/chris/Git/tiny-crawl/www/scripts/playstate.js",
 		"/Users/chris/Git/tiny-crawl/www/scripts/exception.js",
 		"/Users/chris/Git/tiny-crawl/www/scripts/chest.js",
-		"/Users/chris/Git/tiny-crawl/www/scripts/lib/Embiggen.js",
-		"/Users/chris/Git/pixi.js/src/pixi/display/Sprite.js",
-		"/Users/chris/Git/pixi.js/bin/pixi.js",
-		"/Users/chris/Git/phaser/src/pixi/display/Sprite.js",
-		"/Users/chris/Git/pixi.js/src/pixi/display/Stage.js",
-		"/Users/chris/Git/tiny-crawl/phaser/src/pixi/display/Sprite.js"
+		"/Users/chris/Git/tiny-crawl/www/scripts/lib/Embiggen.js"
 	],
 	"find":
 	{
-		"height": 23.0
+		"height": 35.0
 	},
 	"find_in_files":
 	{
@@ -490,6 +541,10 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"self._screen",
+			"peers",
+			"listensocket",
+			"load",
 			"’",
 			"scanf",
 			"\\d{4}",
@@ -613,11 +668,7 @@
 			"_aspects",
 			"_systemTypeRegistry",
 			"addRenderer",
-			"world",
-			"Throw",
-			"aspects",
-			"|",
-			"&"
+			"world"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -629,14 +680,189 @@
 		"reverse": false,
 		"show_context": true,
 		"use_buffer2": true,
-		"whole_word": false,
+		"whole_word": true,
 		"wrap": true
 	},
 	"groups":
 	[
 		{
+			"selected": 1,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "ShinyNinja/client.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1133,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1034,
+								1034
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2560,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2560,
+								2560
+							]
+						],
+						"settings":
+						{
+							"auto_name": "1/10/14",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "ShinyNinja/Game/Graphics.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 172,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								170,
+								170
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/Users/chris/Git/zeldack/src/main/main.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 27186,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								27082,
+								26691
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 9047.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "ShinyNinja/Game/Spritesheet.py",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 1500,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "ShinyNinja/Networking/Client.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1562,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								189,
+								189
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				}
 			]
 		}
 	],

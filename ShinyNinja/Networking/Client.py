@@ -3,21 +3,22 @@ import socket
 import Messages as Messages
 import pickle
 
-listensocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+class Peer:
+    def __init__(self, sock, addr):
+        self.sock = sock
+        self.addr = addr
+        self.avatar = 0
 
-def find_peers():
-    if len(sys.argv) != 3:
-        print("Expected name of matchmaking server and number of players")
-        sys.exit(1)
+_listensocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+_peers = []
+_avatars = []
 
-    server_name, n = sys.argv[1:]
-
-    peers = []
+def find_peers(server_name, n):
 
     print("Created listen socket")
-    listensocket.bind(('', Messages.PEER_PORT))
+    _listensocket.bind(('', Messages.PEER_PORT))
     print("Listen socket bound")
-    listensocket.listen(5)
+    _listensocket.listen(5)
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect((server_name, Messages.MATCHMAKING_PORT))
@@ -41,11 +42,13 @@ def find_peers():
         print("Connecting to %s..." % str(addr))
         sock.connect(addr)
         print("Connection succeeded!")
-        peers.append(sock)
+        _peers.append(Peer(sock, peer))
 
     for peer in data.peers:
-        listensocket.accept()
+        _listensocket.accept()
 
     print("Connected to %s peers" % len(data.peers))
 
-    return peers
+def register_avatars(avatars):
+    for i in range(len(_peers)):
+        _peers[i].avatar = avatars[i]
