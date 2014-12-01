@@ -14,3 +14,18 @@ class MatchmakingPeers:
 
 class MatchmakingConnect:
     pass
+
+class Direction:
+    Left = 0
+    Right = 1
+    Up = 2
+    Down = 3
+
+class Orientation:
+    Vertical = 0
+    Horizontal = 0
+
+class NinjaMove:
+    def __init__(self, orientation, magnitude):
+        self.orientation = orientation
+        self.magnitude = magnitude

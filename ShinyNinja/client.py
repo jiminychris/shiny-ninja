@@ -2,7 +2,7 @@ import sys
 import os
 import pygame
 
-from Networking import Client
+from Networking import Client, Messages
 from Game import Graphics
 
 size = 640, 480
@@ -30,7 +30,7 @@ class Main:
         pygame.init()
         self._screen = pygame.display.set_mode(size)
 
-        self._ninjas = [Graphics.Sprite(os.path.join("resources", "images", "idle.png")) for x in range(n)]
+        self._ninjas = [Graphics.Sprite(Client, Messages, os.path.join("resources", "images", "idle.png")) for x in range(n)]
 
         self._avatar = self._ninjas[0]
         Client.register_avatars(self._ninjas[1:])

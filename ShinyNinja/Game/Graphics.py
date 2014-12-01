@@ -3,7 +3,7 @@ import pygame
 _MAX_SPEED = 128
 
 class Sprite(object):
-    def __init__(self, uri, x=0, y=0):
+    def __init__(self, Client, Messages, uri, x=0, y=0):
         self._uri = uri
         self._x = x
         self._y = y
@@ -11,6 +11,8 @@ class Sprite(object):
         self._dy = 0
         self._max_speed = _MAX_SPEED
         self._img = pygame.image.load(uri)
+        self._Client = Client
+        self._Messages = Messages
 
     ###
     # Properties
@@ -29,14 +31,22 @@ class Sprite(object):
         return self._dx
     @dx.setter
     def dx(self, value):
+        if value == self._dx:
+            return
+
         self._dx = value
+        Client.send(Messages.NinjaMove(Messages.Orientation.Horizontal, value))
 
     @property
     def dy(self):
         return self._dy
     @dy.setter
     def dy(self, value):
+        if value == self._dy:
+            return
+
         self._dy = value
+        Client.send(Messages.NinjaMove(Messages.Orientation.Vertical, value))
 
     @property
     def max_speed(self):
