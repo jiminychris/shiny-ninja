@@ -26,6 +26,6 @@ class Sprite:
     def dy(self, value):
         self._dy = value
 
-    def update():
+    def update(self):
         self._x += self._dx
         self._y += self._dy
