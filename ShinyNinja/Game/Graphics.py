@@ -1,6 +1,6 @@
 import pygame
 
-__MAX_SPEED = 5
+_MAX_SPEED = 5
 
 class Sprite:
     def __init__(self, uri, x=0, y=0):
@@ -9,7 +9,7 @@ class Sprite:
         self._y = y
         self._dx = 0
         self._dy = 0
-        self._max_speed = __MAX_SPEED
+        self._max_speed = _MAX_SPEED
         self._img = pygame.image.load(uri)
 
     @property
