@@ -71,7 +71,7 @@ def register_avatars(avatars):
                 _in_messages.put(data)
         except socket.error:
             pass
-    _throttle = Timer(network_frame, blast)
+    _throttle = threading.Timer(network_frame, blast)
     _throttle.start()
 
 def send(message):
