@@ -1,31 +1,42 @@
 MATCHMAKING_PORT = 3126
-PEER_PORT = 3092
 
-class MatchmakingError:
+class Peer(object):
+    def __init__(self, addr, in_sock, out_sock):
+        self.addr = addr
+        self.in_sock = in_sock
+        self.out_sock = out_sock
+        self.avatar = None
+
+class Direction(object):
+    Left = "L"
+    Right = "R"
+    Up = "U"
+    Down = "D"
+
+class Orientation(object):
+    Vertical = "V"
+    Horizontal = "H"
+
+class MatchmakingError(object):
     pass
 
-class MatchmakingConfiguration:
-    def __init__(self, number_of_players):
+class MatchmakingConfiguration(object):
+    def __init__(self, number_of_players, ports):
         self.number_of_players = number_of_players
+        self.ports = ports
 
-class MatchmakingPeers:
+class MatchmakingPeers(object):
     def __init__(self, peers):
         self.peers = peers
 
-class MatchmakingConnect:
+class MatchmakingConnect(object):
     pass
 
-class Direction:
-    Left = 0
-    Right = 1
-    Up = 2
-    Down = 3
-
-class Orientation:
-    Vertical = 0
-    Horizontal = 0
-
-class NinjaMove:
+class NinjaMove(object):
     def __init__(self, orientation, magnitude):
         self.orientation = orientation
         self.magnitude = magnitude
+
+    def __repr__(self):
+        return ("<NinjaMove Orientation=%s Magnitude=%s>"
+            % (self.orientation, self.magnitude))

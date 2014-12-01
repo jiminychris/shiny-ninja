@@ -2,7 +2,7 @@ import sys
 import os
 import pygame
 
-from Networking import Client, Messages
+from Networking import Client
 from Game import Graphics
 
 size = 640, 480
@@ -30,7 +30,7 @@ class Main:
         pygame.init()
         self._screen = pygame.display.set_mode(size)
 
-        self._ninjas = [Graphics.Sprite(Client, Messages, os.path.join("resources", "images", "idle.png")) for x in range(n)]
+        self._ninjas = [Graphics.Sprite(os.path.join("resources", "images", "idle.png")) for x in range(n)]
 
         self._avatar = self._ninjas[0]
         Client.register_avatars(self._ninjas[1:])
@@ -80,6 +80,7 @@ class Main:
             current_time = pygame.time.get_ticks()
             if (current_time >= next_frame):
                 next_frame += frame_time * 1000
+                Client.recv()
                 self.input()
                 self.update()
                 self.render()

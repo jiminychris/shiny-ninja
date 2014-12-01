@@ -7,6 +7,7 @@ HOST = socket.gethostbyname(socket.gethostname())
 def main():
 
     pool = {
+        1: [],
         2: [],
         3: [],
         4: []
@@ -27,7 +28,7 @@ def main():
     while True:
         conn, address = serversocket.accept()
         print("Connected to address %s" % str(address))
-        config = pickle.loads(conn.recv(512))
+        config = pickle.loads(conn.recv(4096))
         if not isinstance(config, Messages.MatchmakingConfiguration):
             print("Breach of protocol; dropping connection to %s" % str(address))
             conn.send(pickle.dumps(Messages.MatchmakingError()))
@@ -40,13 +41,13 @@ def main():
             conn.send(pickle.dumps(Messages.MatchmakingError()))
             conn.close()
             continue
-        pool[n].append((conn, address))
+        pool[n].append((conn, address, config.ports))
 
         if len(pool[n]) == n:
             print("Starting a %s-player game" % str(n))
-            peers = [x[1][0] for x in pool[n]]
-            for x in pool[n]:
-                others = [p for p in peers if p != x[1][0]]
+            peers = pool[n]
+            for x in peers:
+                others = [(p[1][0], p[2].pop()) for p in peers if p != x]
                 x[0].send(pickle.dumps(Messages.MatchmakingPeers(others)))
                 x[0].close()
                 pool[n] = []
