@@ -71,7 +71,6 @@ class Main:
             current_time = pygame.time.get_ticks()
             if (current_time >= next_frame):
                 next_frame += frame_time * 1000
-                start_time
                 self.input()
                 self.update()
                 self.render()
