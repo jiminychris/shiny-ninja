@@ -66,7 +66,7 @@ def find_peers(server_name, n):
         print("Connecting to %s..." % str(addr))
         sock.connect(addr)
         print("Connection succeeded!")
-        _peers.append(Peer(addr, None, sock))
+        _peers.append(Messages.Peer(addr, None, sock))
 
     for sock in comm_array:
         sock.accept()
