@@ -1,6 +1,6 @@
 import pygame
 
-_MAX_SPEED = 32
+_MAX_SPEED = 128
 
 class Sprite(object):
     def __init__(self, uri, x=0, y=0):

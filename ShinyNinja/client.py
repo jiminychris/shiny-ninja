@@ -53,6 +53,15 @@ class Main:
                     self._avatar.dy = -self._avatar.max_speed
                 elif e.key == pygame.K_DOWN:
                     self._avatar.dy = self._avatar.max_speed
+            elif e.type == pygame.KEYUP:
+                if e.key == pygame.K_LEFT:
+                    self._avatar.dx = 0
+                elif e.key == pygame.K_RIGHT:
+                    self._avatar.dx = 0
+                elif e.key == pygame.K_UP:
+                    self._avatar.dy = 0
+                elif e.key == pygame.K_DOWN:
+                    self._avatar.dy = 0
 
     def update(self):
         for ninja in self._ninjas:
