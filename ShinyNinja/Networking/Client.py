@@ -72,16 +72,16 @@ def register_avatars(avatars):
 
     @_setInterval(network_frame)
     def blast():
+        messages = []
         while not _out_messages.empty():
-            message = _out_messages.get()
-            print("Sending %s!" % (message))
-            for peer in _peers:
-                peer.out_sock.send(pickle.dumps(message))
+            messages.append(_out_messages.get())
 
         for peer in _peers:
+            for message in messages:
+                peer.sock.send(pickle.dumps(message))
             try:
                 while True:
-                    data = pickle.loads(peer.in_sock.recv(4096))
+                    data = pickle.loads(peer.sock.recv(4096))
                     _in_messages.put((peer, data))
             except socket.error:
                 pass
