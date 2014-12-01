@@ -61,17 +61,8 @@ def find_peers(server_name, n):
         print("Protocol breach: %s" % str(data))
         sys.exit(1)
     for ip, port in data.peers:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         addr = (ip, port)
-        print("Connecting to %s..." % str(addr))
-        sock.connect(addr)
-        print("Connection succeeded!")
-        _peers.append(Messages.Peer(addr, None, sock))
-
-    for sock in comm_array:
-        sock.accept()
-        match = [p for p in _peers if p.out_sock.getsockname()[0] == sock.getsockname()[0]][0]
-        match.in_sock = sock
+        _peers.append(Messages.Peer(addr, comm_array.pop()))
 
     print("Connected to %s peers" % len(data.peers))
 

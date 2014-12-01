@@ -1,10 +1,9 @@
 MATCHMAKING_PORT = 3126
 
 class Peer(object):
-    def __init__(self, addr, in_sock, out_sock):
+    def __init__(self, addr, sock):
         self.addr = addr
-        self.in_sock = in_sock
-        self.out_sock = out_sock
+        self.sock = sock
         self.avatar = None
 
 class Direction(object):
