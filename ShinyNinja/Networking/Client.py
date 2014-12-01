@@ -13,7 +13,6 @@ class _Peer(object):
 
 _listensocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 _listensocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-_listensocket.setblocking(0)
 _peers = []
 _avatars = []
 _throttle = None
@@ -55,6 +54,7 @@ def find_peers(server_name, n):
 
     for peer in data.peers:
         _listensocket.accept()
+    _listensocket.setblocking(0)
 
     print("Connected to %s peers" % len(data.peers))
 
