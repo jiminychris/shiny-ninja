@@ -12,6 +12,18 @@ class Sprite:
         self._max_speed = _MAX_SPEED
         self._img = pygame.image.load(uri)
 
+    ###
+    # Properties
+    ###
+
+    @property
+    def x(self):
+        return self._x
+    
+    @property
+    def y(self):
+        return self._y
+
     @property
     def dx(self):
         return self._dx
@@ -25,6 +37,21 @@ class Sprite:
     @dy.setter
     def dy(self, value):
         self._dy = value
+
+    @property
+    def max_speed(self):
+        return self._max_speed
+    @max_speed.setter
+    def max_speed(self, value):
+        self._max_speed = value
+    
+    @property
+    def img(self):
+        return self._img
+
+    ###
+    # Methods
+    ###
 
     def update(self):
         self._x += self._dx
