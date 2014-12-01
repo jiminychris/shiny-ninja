@@ -11,6 +11,8 @@ class Main:
     def __init__(self):
         self._screen = None
         self._renderables = []
+        self._ninjas = []
+        self._avatar = None
         self._quit = False
 
     def main(self):
@@ -26,16 +28,18 @@ class Main:
         pygame.init()
         self._screen = pygame.display.set_mode(size)
 
-        ninjas = [Graphics.Sprite(os.path.join("resources", "images", "idle.png")) for x in range(n)]
+        self._ninjas = [Graphics.Sprite(os.path.join("resources", "images", "idle.png")) for x in range(n)]
 
-        Client.register_avatars(ninjas[1:])
+        self._avatar = self._ninjas[0]
+        Client.register_avatars(self._ninjas[1:])
 
-        self._renderables.extend(ninjas)
+        self._renderables.extend(self._ninjas)
 
         self.loop()
 
     def update(self):
-        pass
+        for ninja in self._ninjas:
+            ninja.update()
 
     def render(self):
         self._screen.fill((0,0,0))
@@ -45,6 +49,19 @@ class Main:
 
     def loop(self):
         while not self._quit:
+            for e in pygame.event.get():
+                if e.type == pygame.QUIT:
+                    self._quit = True
+                    #alert network of quitting
+                elif e.type == pygame.KEYDOWN:
+                    if e.key == pygame.K_LEFT:
+                        self._avatar.dx = -self._avatar.max_speed
+                    elif e.key == pygame.K_RIGHT:
+                        self._avatar.dx = self._avatar.max_speed
+                    elif e.key == pygame.K_UP:
+                        self._avatar.dy = -self._avatar.max_speed
+                    elif e.key == pygame.K_DOWN:
+                        self._avatar.dy = self._avatar.max_speed
             self.update()
             self.render()
 
