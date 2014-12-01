@@ -35,7 +35,7 @@ class Sprite(object):
             return
 
         self._dx = value
-        Client.send(Messages.NinjaMove(Messages.Orientation.Horizontal, value))
+        self._Client.send(Messages.NinjaMove(Messages.Orientation.Horizontal, value))
 
     @property
     def dy(self):
@@ -46,7 +46,7 @@ class Sprite(object):
             return
 
         self._dy = value
-        Client.send(Messages.NinjaMove(Messages.Orientation.Vertical, value))
+        self._Client.send(Messages.NinjaMove(Messages.Orientation.Vertical, value))
 
     @property
     def max_speed(self):
