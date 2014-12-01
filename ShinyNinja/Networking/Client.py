@@ -3,7 +3,7 @@ import socket
 import Messages as Messages
 import pickle
 
-class Peer:
+class Peer(object):
     def __init__(self, sock, addr):
         self.sock = sock
         self.addr = addr
