@@ -6,6 +6,8 @@ from Networking import Client
 from Game import Graphics
 
 size = 640, 480
+fps = 30.0
+frame_time = 1.0/fps
 
 class Main:
     def __init__(self):
@@ -37,9 +39,24 @@ class Main:
 
         self.loop()
 
+    def input(self):
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                self._quit = True
+                #alert network of quitting
+            elif e.type == pygame.KEYDOWN:
+                if e.key == pygame.K_LEFT:
+                    self._avatar.dx = -self._avatar.max_speed
+                elif e.key == pygame.K_RIGHT:
+                    self._avatar.dx = self._avatar.max_speed
+                elif e.key == pygame.K_UP:
+                    self._avatar.dy = -self._avatar.max_speed
+                elif e.key == pygame.K_DOWN:
+                    self._avatar.dy = self._avatar.max_speed
+
     def update(self):
         for ninja in self._ninjas:
-            ninja.update()
+            ninja.update(frame_time)
 
     def render(self):
         self._screen.fill((0,0,0))
@@ -49,22 +66,15 @@ class Main:
         pygame.display.flip()
 
     def loop(self):
+        next_frame = pygame.time.get_ticks()
         while not self._quit:
-            for e in pygame.event.get():
-                if e.type == pygame.QUIT:
-                    self._quit = True
-                    #alert network of quitting
-                elif e.type == pygame.KEYDOWN:
-                    if e.key == pygame.K_LEFT:
-                        self._avatar.dx = -self._avatar.max_speed
-                    elif e.key == pygame.K_RIGHT:
-                        self._avatar.dx = self._avatar.max_speed
-                    elif e.key == pygame.K_UP:
-                        self._avatar.dy = -self._avatar.max_speed
-                    elif e.key == pygame.K_DOWN:
-                        self._avatar.dy = self._avatar.max_speed
-            self.update()
-            self.render()
+            current_time = pygame.time.get_ticks()
+            if (current_time >= next_frame):
+                next_frame += frame_time * 1000
+                start_time
+                self.input()
+                self.update()
+                self.render()
 
 if __name__ == '__main__':
     Main().main()

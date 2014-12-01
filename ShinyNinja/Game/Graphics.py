@@ -53,6 +53,6 @@ class Sprite(object):
     # Methods
     ###
 
-    def update(self):
-        self._x += self._dx
-        self._y += self._dy
+    def update(self, frame_time):
+        self._x += self._dx * frame_time
+        self._y += self._dy * frame_time
