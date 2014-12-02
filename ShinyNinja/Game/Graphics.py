@@ -67,4 +67,8 @@ class Sprite(object):
         self._y += self._dy * frame_time
 
     def recv(self, message):
-        pass
+        if isinstance(message, Messages.NinjaMove):
+            if message.orientation == Messages.Orientation.Horizontal:
+                self.dx = message.magnitude
+            else:
+                self.dy = message.magnitude
