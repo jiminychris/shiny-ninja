@@ -99,6 +99,7 @@ def register_avatars(avatars):
     _blaster = blast()
     for peer in _peers:
         _throttle = threading.Thread(target=in_loop, args=(peer,))
+        _throttle.daemon = True
         _throttle.start()
 
 def send(message):
