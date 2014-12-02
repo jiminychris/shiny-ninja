@@ -112,4 +112,4 @@ def recv():
         peer, messages = _in_messages.get()
         messages = pickle.loads(messages)
         for message in messages:
-            peer.avatar.recv(pickle.loads(message))
+            peer.avatar.recv(message)
