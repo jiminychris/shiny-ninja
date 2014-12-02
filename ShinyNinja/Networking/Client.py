@@ -74,6 +74,8 @@ def find_peers(server_name, n):
             print("Protocol breach: %s" % str(data))
             sys.exit(1)
     sock.close()
+    for peer in _peers:
+        peer.sock.setblocking(0)
     print("Connected to %s peer(s)" % (n-1))
 
 
@@ -83,18 +85,22 @@ def register_avatars(avatars):
 
     @_setInterval(network_frame)
     def blast():
+        print("HERE")
         messages = []
         while not _out_messages.empty():
             messages.append(_out_messages.get())
 
         for peer in _peers:
             for message in messages:
+                print("Sending %s" % message)
                 peer.sock.send(pickle.dumps(message))
             try:
                 while True:
                     data = pickle.loads(peer.sock.recv(4096))
+                    print("Received %s" % data)
                     _in_messages.put((peer, data))
             except socket.error:
+                print("Nothing :(")
                 pass
     _throttle = blast()
 
