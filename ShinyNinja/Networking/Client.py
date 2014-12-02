@@ -88,12 +88,13 @@ def register_avatars(avatars):
         messages = []
         while not _out_messages.empty():
             message = _out_messages.get()
-            for peer in _peers:
-                peer.sock.send(pickle.dumps(message))
+            messages.append(message)
+        for peer in _peers:
+            peer.sock.send(pickle.dumps(messages))
 
     def in_loop(peer):
         while True:
-            data = pickle.loads(peer.sock.recv(4096))
+            data = peer.sock.recv(4096)
             _in_messages.put((peer, data))
 
     _blaster = blast()
@@ -108,5 +109,7 @@ def send(message):
 def recv():
     result = []
     while not _in_messages.empty():
-        peer, message = _in_messages.get()
-        peer.avatar.recv(message)
+        peer, messages = _in_messages.get()
+        messages = pickle.loads(messages)
+        for message in messages:
+            peer.avatar.recv(pickle.loads(message))
