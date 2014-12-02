@@ -1,10 +1,12 @@
 import socket
 from Networking import Messages
 import pickle
+import random
 
 HOST = socket.gethostbyname(socket.gethostname())
 
 def main():
+    random.seed()
 
     pool = {
         1: [],
@@ -16,6 +18,7 @@ def main():
     print(HOST)
     #create an INET, STREAMing socket
     serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     print("Created socket")
     # bind the socket to a public host,
     # and an unassigned port
@@ -45,7 +48,10 @@ def main():
 
         if len(pool[n]) == n:
             print("Starting a %s-player game" % str(n))
+            spotlights = [(random.random(), random.random()) for i in range(3)]
             peers = pool[n]
+            for peer in peers:
+                peer[0].send(pickle.dumps(Messages.Spotlights(spotlights)))
             for i in range(n-1):
                 x = peers[i]
 

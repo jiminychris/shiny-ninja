@@ -43,3 +43,15 @@ class NinjaMove(object):
     def __repr__(self):
         return ("<NinjaMove Orientation=%s Magnitude=%s>"
             % (self.orientation, self.magnitude))
+
+class NinjaPosition(object):
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __repr__(self):
+        return ("<NinjaPosition x=%s y=%s>"
+            % (self.x, self.y))
+class Spotlights(object):
+    def __init__(self, spotlights):
+        self.spotlights = spotlights

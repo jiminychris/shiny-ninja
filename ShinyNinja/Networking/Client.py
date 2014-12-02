@@ -26,6 +26,7 @@ def _setInterval(interval):
 comm_array = []
 _peers = []
 _avatars = []
+_spotlights = []
 _throttle = None
 _in_messages = Queue.Queue()
 _out_messages = Queue.Queue()
@@ -50,6 +51,12 @@ def find_peers(server_name, n):
     sock.send(pickle.dumps(Messages.MatchmakingConfiguration(int(n), [s.getsockname()[1] for s in comm_array])))
 
     print("Waiting for players...")
+    data = pickle.loads(sock.recv(4096))
+    if not isinstance(data, Messages.Spotlights):
+        print("Expected spotlight data")
+        sys.exit(1)
+    _spotlights.extend(data.spotlights)
+    print("Found players!")
 
     while len(comm_array) > 0:
         data = pickle.loads(sock.recv(4096))
@@ -62,6 +69,7 @@ def find_peers(server_name, n):
             comm_array.remove(server_sock)
             conn, addr = server_sock.accept()
             _peers.append(Messages.Peer(addr, conn))
+            print("Connected to %s on port %s" % (addr, conn.getsockname()[1]))
             server_sock.close()
         elif isinstance(data, Messages.MatchmakingPeers):
             print("Connecting to %s peer(s)" % len(data.peers))
@@ -70,6 +78,7 @@ def find_peers(server_name, n):
                 peer_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 peer_sock.connect(addr)
                 _peers.append(Messages.Peer(addr, peer_sock))
+                print("Connected to %s on port %s" % (addr, peer_sock.getsockname()[1]))
         else:
             print("Protocol breach: %s" % str(data))
             sys.exit(1)
@@ -78,6 +87,8 @@ def find_peers(server_name, n):
         #peer.sock.setblocking(0)
     print("Connected to %s peer(s)" % (n-1))
 
+def get_spotlights():
+    return _spotlights
 
 def register_avatars(avatars):
     for i in range(len(_peers)):
@@ -110,6 +121,10 @@ def recv():
     result = []
     while not _in_messages.empty():
         peer, messages = _in_messages.get()
-        messages = pickle.loads(messages)
+        try:
+            messages = pickle.loads(messages)
+        except EOFError:
+            print("Peer quit the game")
+            sys.exit(1)
         for message in messages:
             peer.avatar.recv(message)
