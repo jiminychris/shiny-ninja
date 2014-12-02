@@ -28,6 +28,10 @@ class MatchmakingPeers(object):
     def __init__(self, peers):
         self.peers = peers
 
+class MatchmakingAccept(object):
+    def __init__(self, port):
+        self.port = port
+
 class MatchmakingConnect(object):
     pass
 

@@ -51,20 +51,33 @@ def find_peers(server_name, n):
     sock.send(pickle.dumps(Messages.MatchmakingConfiguration(int(n), [s.getsockname()[1] for s in comm_array])))
 
     print("Waiting for players...")
-    data = pickle.loads(sock.recv(4096))
-    sock.close()
-    print("Found players!")
-    if isinstance(data, Messages.MatchmakingError):
-        print("Matchmaking Error")
-        sys.exit(1)
-    if not isinstance(data, Messages.MatchmakingPeers):
-        print("Protocol breach: %s" % str(data))
-        sys.exit(1)
-    for ip, port in data.peers:
-        addr = (ip, port)
-        _peers.append(Messages.Peer(addr, comm_array.pop()))
 
-    print("Connected to %s peers" % len(data.peers))
+    connections = 0
+    while connections != n-1:
+        data = pickle.loads(sock.recv(4096))
+        if isinstance(data, Messages.MatchmakingError):
+            print("Matchmaking Error")
+            sys.exit(1)
+        if isinstance(data, Messages.MatchmakingAccept):
+            print("Connecting to 1 peer")
+            sock = [s for s in comm_array if s.getsockname()[1] == data.port][0]
+            comm_array.remove(sock)
+            conn, addr = sock.accept()
+            peers.append(Messages.Peer((addr, conn)))
+            connections += 1
+        if isinstance(data, Messages.MatchmakingPeers):
+            print("Connecting to %s peer(s)" % len(data.peers))
+            for addr, ports in data.peers:
+                sock = comm_array.pop()
+                sock.connect(addr)
+                _peers.append(Messages.Peer(addr, sock))
+                connections += 1
+        else:
+            print("Protocol breach: %s" % str(data))
+            sys.exit(1)
+    sock.close()
+    print("Connected to %s peer(s)" % (n-1))
+
 
 def register_avatars(avatars):
     for i in range(len(_peers)):

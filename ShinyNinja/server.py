@@ -46,11 +46,19 @@ def main():
         if len(pool[n]) == n:
             print("Starting a %s-player game" % str(n))
             peers = pool[n]
-            for x in peers:
-                others = [(p[1][0], p[2].pop()) for p in peers if p != x]
-                x[0].send(pickle.dumps(Messages.MatchmakingPeers(others)))
+            for i in range(n-1):
+                x = peers[i]
+
+                others = []
+                for o in peers[i+1:]:
+                    addr = o[1][0], o[2].pop()
+                    others.append((o[0], addr))
+                x[0].send(pickle.dumps(Messages.MatchmakingPeers([addr for conn, addr in others])))
                 x[0].close()
-                pool[n] = []
+
+                for o in others:
+                    o[0].send(pickle.dumps(Messages.MatchmakingAccept(o[1][1])))
+            pool[n] = []
 
 if __name__ == '__main__':
     main()
