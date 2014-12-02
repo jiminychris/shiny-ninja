@@ -52,27 +52,25 @@ def find_peers(server_name, n):
 
     print("Waiting for players...")
 
-    connections = 0
-    while connections != n-1:
+    while len(comm_array) > 0:
         data = pickle.loads(sock.recv(4096))
         if isinstance(data, Messages.MatchmakingError):
             print("Matchmaking Error")
             sys.exit(1)
         if isinstance(data, Messages.MatchmakingAccept):
             print("Connecting to 1 peer")
-            sock = [s for s in comm_array if s.getsockname()[1] == data.port][0]
-            comm_array.remove(sock)
-            conn, addr = sock.accept()
+            server_sock = [s for s in comm_array if s.getsockname()[1] == data.port][0]
+            comm_array.remove(server_sock)
+            conn, addr = server_sock.accept()
             peers.append(Messages.Peer((addr, conn)))
-            connections += 1
+            server_sock.close()
         if isinstance(data, Messages.MatchmakingPeers):
             print("Connecting to %s peer(s)" % len(data.peers))
             for addr in data.peers:
-                sock = comm_array.pop()
-                sock.close()
-                sock.connect(addr)
-                _peers.append(Messages.Peer(addr, sock))
-                connections += 1
+                comm_array.pop().close()
+                peer_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                peer_sock.connect(addr)
+                _peers.append(Messages.Peer(addr, peer_sock))
         else:
             print("Protocol breach: %s" % str(data))
             sys.exit(1)
