@@ -69,6 +69,7 @@ def find_peers(server_name, n):
             print("Connecting to %s peer(s)" % len(data.peers))
             for addr in data.peers:
                 sock = comm_array.pop()
+                sock.close()
                 sock.connect(addr)
                 _peers.append(Messages.Peer(addr, sock))
                 connections += 1
