@@ -61,7 +61,7 @@ def find_peers(server_name, n):
             server_sock = [s for s in comm_array if s.getsockname()[1] == data.port][0]
             comm_array.remove(server_sock)
             conn, addr = server_sock.accept()
-            peers.append(Messages.Peer((addr, conn)))
+            _peers.append(Messages.Peer((addr, conn)))
             server_sock.close()
         if isinstance(data, Messages.MatchmakingPeers):
             print("Connecting to %s peer(s)" % len(data.peers))
