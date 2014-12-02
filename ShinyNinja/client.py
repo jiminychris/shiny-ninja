@@ -70,7 +70,6 @@ class Main:
     def render(self):
         self._screen.fill((0,0,0))
         for r in self._renderables:
-            #print(r.x, r.y, r.dx, r.dy)
             self._screen.blit(r.img, (r.x, r.y))
         pygame.display.flip()
 
