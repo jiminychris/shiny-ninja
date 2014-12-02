@@ -56,14 +56,14 @@ def find_peers(server_name, n):
         if isinstance(data, Messages.MatchmakingError):
             print("Matchmaking Error")
             sys.exit(1)
-        if isinstance(data, Messages.MatchmakingAccept):
+        elif isinstance(data, Messages.MatchmakingAccept):
             print("Connecting to 1 peer")
             server_sock = [s for s in comm_array if s.getsockname()[1] == data.port][0]
             comm_array.remove(server_sock)
             conn, addr = server_sock.accept()
             _peers.append(Messages.Peer(addr, conn))
             server_sock.close()
-        if isinstance(data, Messages.MatchmakingPeers):
+        elif isinstance(data, Messages.MatchmakingPeers):
             print("Connecting to %s peer(s)" % len(data.peers))
             for addr in data.peers:
                 comm_array.pop().close()
