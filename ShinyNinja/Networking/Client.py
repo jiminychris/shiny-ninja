@@ -37,7 +37,6 @@ def find_peers(server_name, n):
     for p in range(n-1):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        sock.setblocking(0)
         print("Created listen socket")
         sock.bind(('', 0))
         print("Listen socket bound")
