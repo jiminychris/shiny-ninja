@@ -4,6 +4,14 @@ import pickle
 import sys
 import threading
 import Queue
+import math
+import time
+
+def get_millis():
+    return int(round(time.time() * 1000))
+
+fps = 30.0
+frame_time = 1.0/fps
 
 HOST = socket.gethostbyname(socket.gethostname())
 
@@ -52,7 +60,7 @@ def main():
         s.listen(5)
 
         comm_array.append(s)
-    
+
     config.ports = [s.getsockname()[1] for s in comm_array]
     sock.send(pickle.dumps(config))
 
@@ -103,12 +111,7 @@ def main():
 
     def outgoing(peer):
         while True:
-            peer["remote_socket"].send(peer["local_socket"].recv(4096))
-
-    def outgoing_special(peer):
-        while True:
             message = peer["local_socket"].recv(4096)
-            peer["remote_socket"].send(message)
             me["queue"].put(message)
 
     for peer in peers:
@@ -119,21 +122,52 @@ def main():
         thread.daemon = True
         thread.start()
 
-        target = outgoing
-        if peer == peers[0]:
-            target = outgoing_special
-        thread = threading.Thread(target=target, args=(peer,))
-        thread.daemon = True
-        thread.start()
+    thread = threading.Thread(target=outgoing, args=(peers[0],))
+    thread.daemon = True
+    thread.start()
 
-    j = 0
+    def distance(a, b):
+        return math.sqrt(math.pow(a["x"]-b["x"], 2) + math.pow(a["y"]-b["y"], 2))
+
+    started = False
+    next_frame = get_millis()
     while True:
-        print(j)
-        j += 1
+        current_time = get_millis()
+        if (current_time < next_frame):
+            continue
+        next_frame += frame_time * 1000
+        if started:
+            nearest = peers[0]
+            for peer in [peer for peer in peers if "dead" not in peer]:
+                if peer["distance"] < nearest["distance"]:
+                    nearest = peer
+            message = None
+            if nearest["distance"] == 0:
+                message = Messages.SwordSwing(me["x"], me["y"])
+                peer["dead"] = 1
+            elif nearest["x"] < me["x"]:
+                message = Messages.NinjaMove(Messages.Orientation.Horizontal, -1)
+                me["x"] -= 1
+            elif nearest["x"] > me["x"]:
+                message = Messages.NinjaMove(Messages.Orientation.Horizontal, 1)
+                me["x"] += 1
+            elif nearest["y"] < me["y"]:
+                message = Messages.NinjaMove(Messages.Orientation.Vertical, -1)
+                me["y"] -= 1
+            elif nearest["y"] > me["y"]:
+                message = Messages.NinjaMove(Messages.Orientation.Vertical, 1)
+                me["y"] += 1
+            if message is not None:
+                print(message)
+                for peer in peers:
+                    peer["remote_socket"].send(pickle.dumps([message]))
+
+
         while not me["queue"].empty():
             messages = pickle.loads(me["queue"].get())
             for message in messages:
                 if isinstance(message, Messages.NinjaPosition):
+                    started = True
                     me["x"], me["y"] = message.x, message.y
                 elif isinstance(message, Messages.NinjaMove):
                     if message.orientation == Messages.Orientation.Horizontal:
@@ -151,6 +185,7 @@ def main():
                             peer["x"] += message.magnitude
                         else:
                             peer["y"] += message.magnitude
+            peer["distance"] = distance(me, peer)
         print("Local: x=%s y=%s" % (me["x"], me["y"]))
         for i in range(len(peers)):
             print("Remote %s: x=%s y=%s" % (i, peers[i]["x"], peers[i]["y"]))
