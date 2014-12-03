@@ -41,16 +41,36 @@ class Main:
         pygame.init()
         self._screen = pygame.display.set_mode(size)
 
-        self._avatar = Graphics.Sprite(os.path.join("resources", "images", "ninja.png"))
+        self._avatar = Graphics.Ninja(os.path.join("resources", "images", "ninja.png"))
 
-        enemies = [Graphics.Sprite(os.path.join("resources", "images", "enemy.png")) for x in range(n-1)]
+        enemies = [Graphics.Ninja(os.path.join("resources", "images", "enemy.png")) for x in range(n-1)]
 
         spotlights = [Graphics.Sprite(os.path.join("resources", "images", "spotlight.png"), sp[0], sp[1])
                         for sp in spotlight_positions]
 
         self._ninjas = enemies + [self._avatar]
+        print(self._ninjas)
 
-        Client.register_avatars(enemies)
+        def on_enemy_dies(event_args):
+            ninja = event_args["sender"]
+            self._ninjas.remove(ninja)
+            self._renderables.remove(ninja)
+            ninja.dies.unsubscribe(on_enemy_dies)
+            if len(self._ninjas) == 1:
+                print("You win!")
+
+        def on_avatar_dies(event_args):
+            self._ninjas.remove(self._avatar)
+            self._renderables.remove(self._avatar)
+            self._avatar.dies.unsubscribe(on_avatar_dies)
+            print("You lose!")
+
+        for ninja in enemies:
+            ninja.dies.subscribe(on_enemy_dies)
+        self._avatar.dies.subscribe(on_avatar_dies)
+
+        Client.register_local_avatar(self._avatar)
+        Client.register_remote_avatars(enemies)
 
         self._avatar.set_position(random.randint(0, gridw), random.randint(0, gridh))
 
@@ -74,6 +94,8 @@ class Main:
                     self._avatar.dy = -self._avatar.max_speed
                 elif e.key == pygame.K_DOWN:
                     self._avatar.dy = self._avatar.max_speed
+                elif e.key == pygame.K_SPACE:
+                    self._avatar.swing_sword()
             elif e.type == pygame.KEYUP and e.key in self._keys:
                 del self._keys[e.key]
 

@@ -25,6 +25,7 @@ def _setInterval(interval):
 
 comm_array = []
 _peers = []
+_me = Messages.Peer("127.0.0.1", 0)
 _avatars = []
 _spotlights = []
 _throttle = None
@@ -90,7 +91,10 @@ def find_peers(server_name, n):
 def get_spotlights():
     return _spotlights
 
-def register_avatars(avatars):
+def register_local_avatar(avatar):
+    _me.avatar = avatar
+
+def register_remote_avatars(avatars):
     for i in range(len(_peers)):
         _peers[i].avatar = avatars[i]
 
@@ -125,6 +129,8 @@ def recv():
             messages = pickle.loads(messages)
         except EOFError:
             print("Peer quit the game")
-            sys.exit(1)
         for message in messages:
-            peer.avatar.recv(message)
+            if isinstance(message, Messages.SwordSwing):
+                _me.avatar.recv(message)
+            else:
+                peer.avatar.recv(message)

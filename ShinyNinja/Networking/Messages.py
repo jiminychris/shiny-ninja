@@ -52,6 +52,19 @@ class NinjaPosition(object):
     def __repr__(self):
         return ("<NinjaPosition x=%s y=%s>"
             % (self.x, self.y))
+
+class NinjaDeath(object):
+    pass
+
+class SwordSwing(object):
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __repr__(self):
+        return ("<SwordSwing x=%s y=%s>"
+            % (self.x, self.y))
+
 class Spotlights(object):
     def __init__(self, spotlights):
         self.spotlights = spotlights

@@ -48,7 +48,7 @@ def main():
 
         if len(pool[n]) == n:
             print("Starting a %s-player game" % str(n))
-            spotlights = [(random.random(), random.random()) for i in range(3)]
+            spotlights = [(random.random(), random.random()) for i in range(2)]
             peers = pool[n]
             for peer in peers:
                 peer[0].send(pickle.dumps(Messages.Spotlights(spotlights)))
