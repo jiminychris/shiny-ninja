@@ -50,8 +50,7 @@ def main():
             print("Starting a %s-player game" % str(n))
             spotlights = [(random.random(), random.random()) for i in range(2)]
             peers = pool[n]
-            for peer in peers:
-                peer[0].send(pickle.dumps(Messages.Spotlights(spotlights)))
+            spotlights = Messages.Spotlights(spotlights)
             accepts = [[], [], [], []]
             for i in range(n):
                 x = peers[i]
@@ -60,7 +59,7 @@ def main():
                 for o in peers[i+1:]:
                     addr = o[1][0], o[2].pop()
                     others.append((o[0], addr))
-                messages = []
+                messages = [spotlights]
                 for accept in accepts[i]:
                     messages.append(accept)
                 messages.append(Messages.MatchmakingPeers([addr for conn, addr, in others]))

@@ -141,6 +141,7 @@ class Ninja(Sprite):
         self._dy = 0
 
     def recv(self, message):
+        print(message)
         if isinstance(message, Messages.NinjaMove):
             if message.orientation == Messages.Orientation.Horizontal:
                 self._dx = message.magnitude

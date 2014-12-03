@@ -52,16 +52,13 @@ def find_peers(server_name, n):
     sock.send(pickle.dumps(Messages.MatchmakingConfiguration(int(n), [s.getsockname()[1] for s in comm_array])))
 
     print("Waiting for players...")
-    data = pickle.loads(sock.recv(4096))
-    if not isinstance(data, Messages.Spotlights):
-        print("Expected spotlight data")
-        sys.exit(1)
-    _spotlights.extend(data.spotlights)
-    print("Found players!")
 
     messages = pickle.loads(sock.recv(4096))
+    print("Found players!")
     for message in messages:
-        if isinstance(message, Messages.MatchmakingError):
+        if isinstance(message, Messages.Spotlights):
+            _spotlights.extend(data.spotlights)
+        elif isinstance(message, Messages.MatchmakingError):
             print("Matchmaking Error")
             sys.exit(1)
         elif isinstance(message, Messages.MatchmakingAccept):
@@ -70,7 +67,7 @@ def find_peers(server_name, n):
             comm_array.remove(server_sock)
             conn, addr = server_sock.accept()
             _peers.append(Messages.Peer(addr, conn))
-            conn.send(pickle.dumps(Messages.PeerConnected()))
+            #conn.send(pickle.dumps(Messages.PeerConnected()))
             print("Connected to %s on port %s" % (addr, conn.getsockname()[1]))
             server_sock.close()
         elif isinstance(message, Messages.MatchmakingPeers):
@@ -80,14 +77,13 @@ def find_peers(server_name, n):
                 peer_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 peer_sock.connect(addr)
                 _peers.append(Messages.Peer(addr, peer_sock))
-                message = pickle.loads(peer_sock.recv(4096))
-                if not isinstance(message, Messages.PeerConnected):
-                    print("Expected PeerConnected message; got %s" % str(message))
+                #message = pickle.loads(peer_sock.recv(4096))
+                #if not isinstance(message, Messages.PeerConnected):
+                    #print("Expected PeerConnected message; got %s" % str(message))
                 print("Connected to %s on port %s" % (addr, peer_sock.getsockname()[1]))
         else:
             print("Protocol breach: %s" % str(message))
             sys.exit(1)
-    sock.close()
     #for peer in _peers:
         #peer.sock.setblocking(0)
     print("Connected to %s peer(s)" % (n-1))

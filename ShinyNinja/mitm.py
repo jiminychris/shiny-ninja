@@ -16,7 +16,6 @@ frame_time = 1.0/fps
 HOST = socket.gethostbyname(socket.gethostname())
 
 def main():
-    peers = []
     me = {}
 
     if len(sys.argv) != 2:
@@ -49,6 +48,9 @@ def main():
     config = pickle.loads(conn.recv(4096))
 
     n = config.number_of_players
+    peers = []
+    for i in range(n):
+        peers.append({})
     comm_array = []
 
     for p in range(n-1):
@@ -65,43 +67,56 @@ def main():
     sock.send(pickle.dumps(config))
 
 
-    spotlight = sock.recv(4096)
-    conn.send(spotlight)
-    conn.send(pickle.dumps(Messages.MatchmakingPeers([s.getsockname() for s in comm_array])))
-    for s in comm_array:
-        c, a = s.accept()
-        peers.append({"local_socket": c})
-    conn.close()
+    messages = pickle.loads(sock.recv(4096))
+    spotlight = messages[0]
+    messages = messages[1:]
 
-
-    while len(comm_array) > 0:
-        data = pickle.loads(sock.recv(4096))
-        if isinstance(data, Messages.MatchmakingError):
+    for message in messages:
+        if isinstance(message, Messages.MatchmakingError):
             print("Matchmaking Error")
             sys.exit(1)
-        elif isinstance(data, Messages.MatchmakingAccept):
+        elif isinstance(message, Messages.MatchmakingAccept):
             print("Connecting to 1 peer")
-            server_sock = [s for s in comm_array if s.getsockname()[1] == data.port][0]
+            server_sock = [s for s in comm_array if s.getsockname()[1] == message.port][0]
             comm_array.remove(server_sock)
-            conn, addr = server_sock.accept()
-            peers[len(comm_array)]["remote_socket"] = conn
-            print("Connected to %s on port %s" % (addr, conn.getsockname()[1]))
+            c, addr = server_sock.accept()
+            peers[len(comm_array)]["remote_socket"] = c
+            #conn.send(pickle.dumps(Messages.PeerConnected()))
+            print("Connected to %s on port %s" % (addr, c.getsockname()[1]))
             server_sock.close()
-        elif isinstance(data, Messages.MatchmakingPeers):
-            print("Connecting to %s peer(s)" % len(data.peers))
-            for addr in data.peers:
+        elif isinstance(message, Messages.MatchmakingPeers):
+            print("Connecting to %s peer(s)" % len(message.peers))
+            for addr in message.peers:
                 comm_array.pop().close()
                 peer_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 peer_sock.connect(addr)
                 peers[len(comm_array)]["remote_socket"] = peer_sock
+                #message = pickle.loads(peer_sock.recv(4096))
+                #if not isinstance(message, Messages.PeerConnected):
+                    #print("Expected PeerConnected message; got %s" % str(message))
                 print("Connected to %s on port %s" % (addr, peer_sock.getsockname()[1]))
         else:
-            print("Protocol breach: %s" % str(data))
+            print("Protocol breach: %s" % str(message))
             sys.exit(1)
-    sock.close()
+
+    for p in range(n-1):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        s.bind(('', 0))
+        s.listen(5)
+
+        comm_array.append(s)
+
+    conn.send(pickle.dumps([spotlight, Messages.MatchmakingPeers([s.getsockname() for s in comm_array])]))
+
+    for i in range(n):
+        s = comm_array[i]
+        c, a = s.accept()
+        #c.send(pickle.dumps(Messages.PeerConnected()))
+        peers[i]["local_socket"] = c
 
     me["queue"] = Queue.Queue()
-    me["x"] = me["y"] = 0
+    me["x"] = me["y"] = me["distance"] = 0
 
     def incoming(peer):
         while True:
@@ -129,22 +144,23 @@ def main():
     def distance(a, b):
         return math.sqrt(math.pow(a["x"]-b["x"], 2) + math.pow(a["y"]-b["y"], 2))
 
-    started = False
+    readies = 0
+    living_peers = [peer for peer in peers]
     next_frame = get_millis()
     while True:
         current_time = get_millis()
         if (current_time < next_frame):
             continue
         next_frame += frame_time * 1000
-        if started:
-            nearest = peers[0]
-            for peer in [peer for peer in peers if "dead" not in peer]:
+        if readies == n and len(living_peers) > 0:
+            nearest = living_peers[0]
+            for peer in living_peers:
                 if peer["distance"] < nearest["distance"]:
                     nearest = peer
             message = None
             if nearest["distance"] == 0:
                 message = Messages.SwordSwing(me["x"], me["y"])
-                peer["dead"] = 1
+                living_peers.remove(nearest)
             elif nearest["x"] < me["x"]:
                 message = Messages.NinjaMove(Messages.Orientation.Horizontal, -1)
                 me["x"] -= 1
@@ -167,7 +183,7 @@ def main():
             messages = pickle.loads(me["queue"].get())
             for message in messages:
                 if isinstance(message, Messages.NinjaPosition):
-                    started = True
+                    readies += 1
                     me["x"], me["y"] = message.x, message.y
                 elif isinstance(message, Messages.NinjaMove):
                     if message.orientation == Messages.Orientation.Horizontal:
@@ -179,6 +195,7 @@ def main():
                 messages = pickle.loads(peer["queue"].get())
                 for message in messages:
                     if isinstance(message, Messages.NinjaPosition):
+                        readies += 1
                         peer["x"], peer["y"] = message.x, message.y
                     elif isinstance(message, Messages.NinjaMove):
                         if message.orientation == Messages.Orientation.Horizontal:
@@ -187,7 +204,7 @@ def main():
                             peer["y"] += message.magnitude
             peer["distance"] = distance(me, peer)
         print("Local: x=%s y=%s" % (me["x"], me["y"]))
-        for i in range(len(peers)):
+        for i in range(len(living_peers)):
             print("Remote %s: x=%s y=%s" % (i, peers[i]["x"], peers[i]["y"]))
 
 if __name__ == '__main__':
