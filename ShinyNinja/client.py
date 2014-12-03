@@ -56,13 +56,18 @@ class Main:
             self._renderables.remove(ninja)
             ninja.dies.unsubscribe(on_enemy_dies)
             if len(self._ninjas) == 1:
-                print("You win!")
+                if self._ninjas[0] == self._avatar:
+                    print("You win!")
+                else:
+                    print("You lose!")
 
         def on_avatar_dies(event_args):
             self._ninjas.remove(self._avatar)
             self._renderables.remove(self._avatar)
             self._avatar.dies.unsubscribe(on_avatar_dies)
-            print("You lose!")
+            print("You died!")
+            if len(self._ninjas) == 1:
+                print("You lose!")
 
         for ninja in enemies:
             ninja.dies.subscribe(on_enemy_dies)
