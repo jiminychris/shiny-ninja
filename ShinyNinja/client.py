@@ -5,7 +5,7 @@ import random
 import math
 
 from Networking import Client
-from Game import Graphics
+from Game import Ninja, Sprite
 
 size = sizew, sizeh = 704, 528
 tile_size = 88
@@ -41,15 +41,14 @@ class Main:
         pygame.init()
         self._screen = pygame.display.set_mode(size)
 
-        self._avatar = Graphics.Ninja(os.path.join("resources", "images", "ninja.png"))
+        self._avatar = Ninja(os.path.join("resources", "images", "ninja.png"))
 
-        enemies = [Graphics.Ninja(os.path.join("resources", "images", "enemy.png")) for x in range(n-1)]
+        enemies = [Ninja(os.path.join("resources", "images", "enemy.png")) for x in range(n-1)]
 
-        spotlights = [Graphics.Sprite(os.path.join("resources", "images", "spotlight.png"), sp[0], sp[1])
+        spotlights = [Sprite(os.path.join("resources", "images", "spotlight.png"), sp[0], sp[1])
                         for sp in spotlight_positions]
 
         self._ninjas = enemies + [self._avatar]
-        print(self._ninjas)
 
         def on_enemy_dies(event_args):
             ninja = event_args["sender"]

@@ -3,11 +3,13 @@ import socket
 import pickle
 import sys
 import threading
+import Queue
 
 HOST = socket.gethostbyname(socket.gethostname())
 
 def main():
     peers = []
+    me = {}
 
     if len(sys.argv) != 2:
         print("Expected name of matchmaking server")
@@ -29,33 +31,37 @@ def main():
     print("Man-in-the-middle listening >:)")
 
     conn, address = serversocket.accept()
+    serversocket.close()
     print("Connected to address %s" % str(address))
     print("Connecting to real matchmaking server...")
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect((server_name, Messages.MATCHMAKING_PORT))
     print("Connected!")
 
-    raw_config = conn.recv(4096)
-    config = pickle.loads(raw_config)
-    sock.send(raw_config)
+    config = pickle.loads(conn.recv(4096))
 
-    n = raw_config.number_of_players
+    n = config.number_of_players
     comm_array = []
 
     for p in range(n-1):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         print("Created listen socket")
-        sock.bind(('', 0))
+        s.bind(('', 0))
         print("Listen socket bound")
-        sock.listen(5)
+        s.listen(5)
 
-        comm_array.append(sock)
+        comm_array.append(s)
+    
+    config.ports = [s.getsockname()[1] for s in comm_array]
+    sock.send(pickle.dumps(config))
 
-    conn.send(sock.recv(4096))
-    conn.send(pickle.dumps(Messages.MatchmakingPeers([sock.getsockname() for sock in comm_array])))
-    for sock in comm_array:
-        c, a = sock.accept()
+
+    spotlight = sock.recv(4096)
+    conn.send(spotlight)
+    conn.send(pickle.dumps(Messages.MatchmakingPeers([s.getsockname() for s in comm_array])))
+    for s in comm_array:
+        c, a = s.accept()
         peers.append({"local_socket": c})
     conn.close()
 
@@ -86,17 +92,68 @@ def main():
             sys.exit(1)
     sock.close()
 
+    me["queue"] = Queue.Queue()
+    me["x"] = me["y"] = 0
+
     def incoming(peer):
         while True:
-            peer["local_socket"].send(peer["remote_socket"].recv(4096))
-            
+            message = peer["remote_socket"].recv(4096)
+            peer["local_socket"].send(message)
+            peer["queue"].put(message)
+
     def outgoing(peer):
         while True:
             peer["remote_socket"].send(peer["local_socket"].recv(4096))
 
+    def outgoing_special(peer):
+        while True:
+            message = peer["local_socket"].recv(4096)
+            peer["remote_socket"].send(message)
+            me["queue"].put(message)
+
     for peer in peers:
-        threading.Thread(target=incoming, args=(peer,))
-        threading.Thread(target=outgoing, args=(peer,))
+        peer["queue"] = Queue.Queue()
+        peer["x"] = peer["y"] = 0
+
+        thread = threading.Thread(target=incoming, args=(peer,))
+        thread.daemon = True
+        thread.start()
+
+        target = outgoing
+        if peer == peers[0]:
+            target = outgoing_special
+        thread = threading.Thread(target=target, args=(peer,))
+        thread.daemon = True
+        thread.start()
+
+    j = 0
+    while True:
+        print(j)
+        j += 1
+        while not me["queue"].empty():
+            messages = pickle.loads(me["queue"].get())
+            for message in messages:
+                if isinstance(message, Messages.NinjaPosition):
+                    me["x"], me["y"] = message.x, message.y
+                elif isinstance(message, Messages.NinjaMove):
+                    if message.orientation == Messages.Orientation.Horizontal:
+                        me["x"] += message.magnitude
+                    else:
+                        me["y"] += message.magnitude
+        for peer in peers:
+            while not peer["queue"].empty():
+                messages = pickle.loads(peer["queue"].get())
+                for message in messages:
+                    if isinstance(message, Messages.NinjaPosition):
+                        peer["x"], peer["y"] = message.x, message.y
+                    elif isinstance(message, Messages.NinjaMove):
+                        if message.orientation == Messages.Orientation.Horizontal:
+                            peer["x"] += message.magnitude
+                        else:
+                            peer["y"] += message.magnitude
+        print("Local: x=%s y=%s" % (me["x"], me["y"]))
+        for i in range(len(peers)):
+            print("Remote %s: x=%s y=%s" % (i, peers[i]["x"], peers[i]["y"]))
 
 if __name__ == '__main__':
     main()
