@@ -57,7 +57,7 @@ def find_peers(server_name, n):
     print("Found players!")
     for message in messages:
         if isinstance(message, Messages.Spotlights):
-            _spotlights.extend(data.spotlights)
+            _spotlights.extend(message.spotlights)
         elif isinstance(message, Messages.MatchmakingError):
             print("Matchmaking Error")
             sys.exit(1)

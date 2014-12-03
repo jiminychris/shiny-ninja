@@ -49,11 +49,10 @@ def main():
 
     n = config.number_of_players
     peers = []
-    for i in range(n):
-        peers.append({})
     comm_array = []
 
     for p in range(n-1):
+        peers.append({})
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         print("Created listen socket")
@@ -109,7 +108,7 @@ def main():
 
     conn.send(pickle.dumps([spotlight, Messages.MatchmakingPeers([s.getsockname() for s in comm_array])]))
 
-    for i in range(n):
+    for i in range(n-1):
         s = comm_array[i]
         c, a = s.accept()
         #c.send(pickle.dumps(Messages.PeerConnected()))
