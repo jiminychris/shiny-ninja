@@ -59,29 +59,33 @@ def find_peers(server_name, n):
     _spotlights.extend(data.spotlights)
     print("Found players!")
 
-    while len(comm_array) > 0:
-        data = pickle.loads(sock.recv(4096))
-        if isinstance(data, Messages.MatchmakingError):
+    messages = pickle.loads(sock.recv(4096))
+    for message in messages:
+        if isinstance(message, Messages.MatchmakingError):
             print("Matchmaking Error")
             sys.exit(1)
-        elif isinstance(data, Messages.MatchmakingAccept):
+        elif isinstance(message, Messages.MatchmakingAccept):
             print("Connecting to 1 peer")
-            server_sock = [s for s in comm_array if s.getsockname()[1] == data.port][0]
+            server_sock = [s for s in comm_array if s.getsockname()[1] == message.port][0]
             comm_array.remove(server_sock)
             conn, addr = server_sock.accept()
             _peers.append(Messages.Peer(addr, conn))
+            conn.send(pickle.dumps(Messages.PeerConnected()))
             print("Connected to %s on port %s" % (addr, conn.getsockname()[1]))
             server_sock.close()
-        elif isinstance(data, Messages.MatchmakingPeers):
-            print("Connecting to %s peer(s)" % len(data.peers))
-            for addr in data.peers:
+        elif isinstance(message, Messages.MatchmakingPeers):
+            print("Connecting to %s peer(s)" % len(message.peers))
+            for addr in message.peers:
                 comm_array.pop().close()
                 peer_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 peer_sock.connect(addr)
                 _peers.append(Messages.Peer(addr, peer_sock))
+                message = pickle.loads(peer_sock.recv(4096))
+                if not isinstance(message, Messages.PeerConnected):
+                    print("Expected PeerConnected message; got %s" % str(message))
                 print("Connected to %s on port %s" % (addr, peer_sock.getsockname()[1]))
         else:
-            print("Protocol breach: %s" % str(data))
+            print("Protocol breach: %s" % str(message))
             sys.exit(1)
     sock.close()
     #for peer in _peers:
@@ -108,7 +112,7 @@ def register_remote_avatars(avatars):
             peer.sock.send(pickle.dumps(messages))
 
     def in_loop(peer):
-        while True:
+        while peer.active:
             data = peer.sock.recv(4096)
             _in_messages.put((peer, data))
 
@@ -129,6 +133,7 @@ def recv():
             messages = pickle.loads(messages)
         except EOFError:
             print("Peer quit the game")
+            peer.active = False
         for message in messages:
             if isinstance(message, Messages.SwordSwing):
                 _me.avatar.recv(message)

@@ -5,6 +5,7 @@ class Peer(object):
         self.addr = addr
         self.sock = sock
         self.avatar = None
+        self.active = True
 
 class Direction(object):
     Left = "L"
@@ -17,6 +18,9 @@ class Orientation(object):
     Horizontal = "H"
 
 class MatchmakingError(object):
+    pass
+
+class PeerConnected(object):
     pass
 
 class MatchmakingConfiguration(object):

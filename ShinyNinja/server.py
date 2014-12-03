@@ -52,6 +52,7 @@ def main():
             peers = pool[n]
             for peer in peers:
                 peer[0].send(pickle.dumps(Messages.Spotlights(spotlights)))
+            accepts = [[], [], [], []]
             for i in range(n-1):
                 x = peers[i]
 
@@ -59,11 +60,16 @@ def main():
                 for o in peers[i+1:]:
                     addr = o[1][0], o[2].pop()
                     others.append((o[0], addr))
-                x[0].send(pickle.dumps(Messages.MatchmakingPeers([addr for conn, addr in others])))
+                messages = []
+                for accept in accepts[i]:
+                    messages.append(accept)
+                messages.append(Messages.MatchmakingPeers([addr for conn, addr, in others]))
+                x[0].send(pickle.dumps(messages))
                 x[0].close()
 
-                for o in others:
-                    o[0].send(pickle.dumps(Messages.MatchmakingAccept(o[1][1])))
+                for j in range(len(others)):
+                    o = others[j]
+                    accepts[1+i+j].append(Messages.MatchmakingAccept(o[1][1]))
             pool[n] = []
 
 if __name__ == '__main__':
