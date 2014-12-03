@@ -53,7 +53,7 @@ def main():
             for peer in peers:
                 peer[0].send(pickle.dumps(Messages.Spotlights(spotlights)))
             accepts = [[], [], [], []]
-            for i in range(n-1):
+            for i in range(n):
                 x = peers[i]
 
                 others = []
