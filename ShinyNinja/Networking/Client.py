@@ -4,7 +4,27 @@ import Messages
 import pickle
 import threading
 import Queue
+import sha
 
+class _Protocol(object):
+    NAIVE = 0
+    LOCKSTEP = 1
+    AS = 2
+
+PROTOCOL = _Protocol.NAIVE
+if len(sys.argv) > 3:
+    protocol = sys.argv[3]
+    if protocol == "naive":
+        pass
+    elif protocol == "lockstep":
+        PROTOCOL = _Protocol.LOCKSTEP
+    elif protocol == "as":
+        PROTOCOL = _Protocol.AS
+        print("AS not implemented")
+        sys.exit(1)
+    else:
+        print("protocol not recognized")
+        sys.exit(1)
 
 #code from http://stackoverflow.com/questions/12435211/python-threading-timer-repeat-function-every-n-seconds
 def _setInterval(interval):
@@ -94,44 +114,108 @@ def get_spotlights():
 def register_local_avatar(avatar):
     _me.avatar = avatar
 
-def register_remote_avatars(avatars):
-    for i in range(len(_peers)):
-        _peers[i].avatar = avatars[i]
+if (PROTOCOL == _Protocol.NAIVE):
+    def register_remote_avatars(avatars):
+        for i in range(len(_peers)):
+            _peers[i].avatar = avatars[i]
 
-    @_setInterval(network_frame)
-    def blast():
-        messages = []
-        while not _out_messages.empty():
-            message = _out_messages.get()
-            messages.append(message)
+        @_setInterval(network_frame)
+        def blast():
+            messages = []
+            while not _out_messages.empty():
+                message = _out_messages.get()
+                messages.append(message)
+            for peer in _peers:
+                peer.sock.send(pickle.dumps(messages))
+
+        def in_loop(peer):
+            while peer.active:
+                data = peer.sock.recv(4096)
+                _in_messages.put((peer, data))
+
+        _blaster = blast()
         for peer in _peers:
-            peer.sock.send(pickle.dumps(messages))
+            _throttle = threading.Thread(target=in_loop, args=(peer,))
+            _throttle.daemon = True
+            _throttle.start()
 
-    def in_loop(peer):
-        while peer.active:
-            data = peer.sock.recv(4096)
-            _in_messages.put((peer, data))
+    def send(message):
+        _out_messages.put(message)
 
-    _blaster = blast()
-    for peer in _peers:
-        _throttle = threading.Thread(target=in_loop, args=(peer,))
-        _throttle.daemon = True
-        _throttle.start()
+    def recv():
+        result = []
+        while not _in_messages.empty():
+            peer, messages = _in_messages.get()
+            try:
+                messages = pickle.loads(messages)
+            except EOFError:
+                print("Peer quit the game")
+                peer.active = False
+            for message in messages:
+                if isinstance(message, Messages.SwordSwing):
+                    _me.avatar.recv(message)
+                else:
+                    peer.avatar.recv(message)
+elif (PROTOCOL == _Protocol.LOCKSTEP):
+    hashes = Queue.Queue(len(_peers))
 
-def send(message):
-    _out_messages.put(message)
+    def register_remote_avatars(avatars):
+        for i in range(len(_peers)):
+            _peers[i].avatar = avatars[i]
 
-def recv():
-    result = []
-    while not _in_messages.empty():
-        peer, messages = _in_messages.get()
-        try:
-            messages = pickle.loads(messages)
-        except EOFError:
-            print("Peer quit the game")
-            peer.active = False
-        for message in messages:
-            if isinstance(message, Messages.SwordSwing):
-                _me.avatar.recv(message)
-            else:
-                peer.avatar.recv(message)
+        @_setInterval(network_frame)
+        def blast():
+            messages = []
+            while not _out_messages.empty():
+                message = _out_messages.get()
+                messages.append(message)
+            s = pickle.dumps(messages)
+            h = sha.new(s).digest()
+            for peer in _peers:
+                peer.sock.send(h)
+            ct = 0
+            while ct < len(_peers):
+                hashes.get()
+                ct += 1
+            for peer in _peers:
+                peer.sock.send(s)
+
+        def in_loop(peer):
+            while peer.active:
+                data = peer.sock.recv(4096)
+                h = data[:20]
+                hashes.put(h)
+                data = data[20:]
+                if len(data) == 0:
+                    data = peer.sock.recv(4096)
+                _in_messages.put((peer, data, h))
+
+        _blaster = blast()
+        for peer in _peers:
+            _throttle = threading.Thread(target=in_loop, args=(peer,))
+            _throttle.daemon = True
+            _throttle.start()
+
+    def send(message):
+        _out_messages.put(message)
+
+    def recv():
+        result = []
+        while not _in_messages.empty():
+            peer, s, h = _in_messages.get()
+            check = sha.new(s).digest()
+            if not check == h:
+                print("CHEATER! (%s : %s)" % (check, h))
+            messages = []
+            try:
+                messages = pickle.loads(s)
+            except EOFError:
+                print("Peer quit the game")
+                peer.active = False
+            for message in messages:
+                if isinstance(message, Messages.SwordSwing):
+                    _me.avatar.recv(message)
+                else:
+                    peer.avatar.recv(message)
+else:
+    pass

@@ -25,11 +25,11 @@ class Main:
 
     def main(self):
         random.seed()
-        if len(sys.argv) != 3:
+        if len(sys.argv) < 3:
             print("Expected name of matchmaking server and number of players")
             sys.exit(1)
 
-        server_name, n = sys.argv[1:]
+        server_name, n = sys.argv[1:3]
         n = int(n)
 
         Client.find_peers(server_name, n)
