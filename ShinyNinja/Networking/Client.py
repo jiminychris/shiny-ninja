@@ -22,7 +22,6 @@ def _setInterval(interval):
             return stopped
         return wrapper
     return decorator
-###
 
 comm_array = []
 _peers = []
