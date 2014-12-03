@@ -5,6 +5,7 @@ import pickle
 import threading
 import Queue
 import sha
+import struct
 
 class _Protocol(object):
     NAIVE = 0
@@ -20,8 +21,6 @@ if len(sys.argv) > 3:
         PROTOCOL = _Protocol.LOCKSTEP
     elif protocol == "as":
         PROTOCOL = _Protocol.AS
-        print("AS not implemented")
-        sys.exit(1)
     else:
         print("protocol not recognized")
         sys.exit(1)
@@ -125,13 +124,23 @@ if (PROTOCOL == _Protocol.NAIVE):
             while not _out_messages.empty():
                 message = _out_messages.get()
                 messages.append(message)
+            s = pickle.dumps(messages)
+            raw_size = struct.pack("!L", len(s))
             for peer in _peers:
-                peer.sock.send(pickle.dumps(messages))
+                peer.sock.send(raw_size)
+                peer.sock.send(s)
 
         def in_loop(peer):
+            data = ""
             while peer.active:
-                data = peer.sock.recv(4096)
-                _in_messages.put((peer, data))
+                while len(data) < 4:
+                    data += peer.sock.recv(4)
+                raw_size, data = data[:4], data[4:]
+                size = struct.unpack("!L", raw_size)[0]
+                while len(data) < size:
+                    data += peer.sock.recv(4096)
+                message, data = data[:size], data[size:]
+                _in_messages.put((peer, message))
 
         _blaster = blast()
         for peer in _peers:
@@ -156,6 +165,7 @@ if (PROTOCOL == _Protocol.NAIVE):
                     _me.avatar.recv(message)
                 else:
                     peer.avatar.recv(message)
+
 elif (PROTOCOL == _Protocol.LOCKSTEP):
     hashes = Queue.Queue(len(_peers))
 
@@ -177,18 +187,26 @@ elif (PROTOCOL == _Protocol.LOCKSTEP):
             while ct < len(_peers):
                 hashes.get()
                 ct += 1
+            raw_size = struct.pack("!L", len(s))
             for peer in _peers:
+                peer.sock.send(raw_size)
                 peer.sock.send(s)
 
         def in_loop(peer):
+            data = ""
             while peer.active:
-                data = peer.sock.recv(4096)
-                h = data[:20]
+                while len(data) < 20:
+                    data += peer.sock.recv(20)
+                h, data = data[:20], data[20:]
                 hashes.put(h)
-                data = data[20:]
-                if len(data) == 0:
-                    data = peer.sock.recv(4096)
-                _in_messages.put((peer, data, h))
+                while len(data) < 4:
+                    data += peer.sock.recv(4)
+                raw_size, data = data[:4], data[4:]
+                size = struct.unpack("!L", raw_size)[0]
+                while len(data) < size:
+                    data += peer.sock.recv(4096)
+                message, data = data[:size], data[size:]
+                _in_messages.put((peer, message, h))
 
         _blaster = blast()
         for peer in _peers:
@@ -198,6 +216,104 @@ elif (PROTOCOL == _Protocol.LOCKSTEP):
 
     def send(message):
         _out_messages.put(message)
+
+    def recv():
+        result = []
+        while not _in_messages.empty():
+            peer, s, h = _in_messages.get()
+            check = sha.new(s).digest()
+            print("Received hash: %s" % h)
+            print("Plaintext  =>  %s" % check)
+            if not check == h:
+                print("CHEATER! (%s : %s)" % (check, h))
+            messages = []
+            try:
+                messages = pickle.loads(s)
+            except EOFError:
+                print("Peer quit the game")
+                peer.active = False
+            for message in messages:
+                if isinstance(message, Messages.SwordSwing):
+                    _me.avatar.recv(message)
+                else:
+                    peer.avatar.recv(message)
+
+else:
+    hashes = Queue.Queue(len(_peers))
+
+    def register_remote_avatars(avatars):
+        for i in range(len(_peers)):
+            _peers[i].avatar = avatars[i]
+
+        @_setInterval(network_frame)
+        def blast():
+            messages = []
+            while not _out_messages.empty():
+                message = _out_messages.get()
+                messages.append(message)
+            s = pickle.dumps(messages)
+            h = sha.new(s).digest()
+            for peer in _peers:
+                peer.sock.send(h)
+            ct = 0
+            while ct < len(_peers):
+                hashes.get()
+                ct += 1
+            raw_size = struct.pack("!L", len(s))
+            for peer in _peers:
+                peer.sock.send(raw_size)
+                peer.sock.send(s)
+
+        def in_loop(peer):
+            data = ""
+            while peer.active:
+                while len(data) < 20:
+                    data += peer.sock.recv(20)
+                h, data = data[:20], data[20:]
+                hashes.put(h)
+                while len(data) < 4:
+                    data += peer.sock.recv(4)
+                raw_size, data = data[:4], data[4:]
+                size = struct.unpack("!L", raw_size)[0]
+                while len(data) < size:
+                    data += peer.sock.recv(4096)
+                message, data = data[:size], data[size:]
+                _in_messages.put((peer, message, h))
+
+        _blaster = blast()
+        for peer in _peers:
+            _throttle = threading.Thread(target=in_loop, args=(peer,))
+            _throttle.daemon = True
+            _throttle.start()
+
+    def send(message):
+        sending = True
+        if isinstance(message, Messages.NinjaMove):
+            lit = False
+            x = _me.avatar.x
+            y = _me.avatar.y
+            if message.orientation == Messages.Orientation.Horizontal:
+                x += message.magnitude
+            elif message.orientation == Messages.Orientation.Vertical:
+                y += message.magnitude
+
+            for spotlight in _spotlights:
+                if not (_me.avatar.x < spotlight[0]-1
+                    or _me.avatar.x > spotlight[0]+1
+                    or _me.avatar.y < spotlight[1]-1
+                    or _me.avatar.y > spotlight[1]+1):
+                    lit = True
+                    break
+                if not (x < spotlight[0]-1
+                    or x > spotlight[0]+1
+                    or y < spotlight[1]-1
+                    or y > spotlight[1]+1):
+                    message = Messages.NinjaPosition(x, y)
+                    lit = True
+                    break
+            sending = lit
+        if sending:
+            _out_messages.put(message)
 
     def recv():
         result = []
@@ -217,5 +333,3 @@ elif (PROTOCOL == _Protocol.LOCKSTEP):
                     _me.avatar.recv(message)
                 else:
                     peer.avatar.recv(message)
-else:
-    pass
