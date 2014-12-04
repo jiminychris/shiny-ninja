@@ -6,6 +6,7 @@ import threading
 import Queue
 import math
 import time
+import struct
 
 def get_millis():
     return int(round(time.time() * 1000))
@@ -118,14 +119,31 @@ def main():
     me["x"] = me["y"] = me["distance"] = 0
 
     def incoming(peer):
+        data = ""
         while True:
-            message = peer["remote_socket"].recv(4096)
+            while len(data) < 4:
+                data += peer["remote_socket"].recv(4)
+            raw_size, data = data[:4], data[4:]
+            size = struct.unpack("!L", raw_size)[0]
+            while len(data) < size:
+                data += peer["remote_socket"].recv(4096)
+            message, data = data[:size], data[size:]
+
+            peer["local_socket"].send(raw_size)
             peer["local_socket"].send(message)
             peer["queue"].put(message)
 
     def outgoing(peer):
+        data = ""
         while True:
-            message = peer["local_socket"].recv(4096)
+            while len(data) < 4:
+                data += peer["local_socket"].recv(4)
+            raw_size, data = data[:4], data[4:]
+            size = struct.unpack("!L", raw_size)[0]
+            while len(data) < size:
+                data += peer["local_socket"].recv(4096)
+            message, data = data[:size], data[size:]
+
             me["queue"].put(message)
 
     for peer in peers:
@@ -173,9 +191,11 @@ def main():
                 message = Messages.NinjaMove(Messages.Orientation.Vertical, 1)
                 me["y"] += 1
             if message is not None:
-                print(message)
+                s = pickle.dumps([message])
+                raw_size = struct.pack("!L", len(s))
                 for peer in peers:
-                    peer["remote_socket"].send(pickle.dumps([message]))
+                    peer["remote_socket"].send(raw_size)
+                    peer["remote_socket"].send(s)
 
 
         while not me["queue"].empty():
