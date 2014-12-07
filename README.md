@@ -9,7 +9,7 @@ Requires Python 2.7 and Pygame 1.9.
 Compatibility
 -------------
 
-Everything works on Mac OS X Yosemite, and the matchmaking server definitely works on Windows 7. The only probelm noticed
+Everything works on Mac OS X Yosemite, and the matchmaking server definitely works on Windows 7. The only problem noticed
 with Windows 7 is that it crashed when trying to use the Man-in-the-Middle script (mitm.py).
 
 
